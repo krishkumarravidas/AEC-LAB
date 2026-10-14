@@ -73,6 +73,6 @@ The page also compares the Poisson PMF for λ = 2, 6 and 10. As λ increases, th
 
 ## Author
 
-Name: _your name_
-Roll number: _your roll number_
-Guide: _your lab instructor_
+Name:Krish Kuamr Ravi Das
+Roll number: 26UG1BYAI402-T
+Guide: Sanjay M

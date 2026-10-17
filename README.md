@@ -98,22 +98,22 @@ Open index.html in a browser. Thats it.
 - P(X=2) = 0.1887
 - graph is skewed to the right, most bars at 0 and 1 defects
 
-- <img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/8d1f0a34-5ead-46c9-9cb7-867f32b81175" />
+-<img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/76ab512d-7bf1-4858-822c-37dacd360ce3" />
+ 
 
 
 **Changed p to 0.10**
 - mean becomes 2, P(X=2) = 0.2852
 - graph shifts right and gets wider
 
-<img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/2e5e1b14-46d9-4afe-8720-8179361a8db8" />
-
+-<img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/95c748ae-4c3f-4816-bd87-a03f7d87aaa1" />
 
 
 **Poisson λ=5**
 - P(X=3) = 0.1404
 - Binomial(100, 0.05) gives 0.1396 so almost the same, Poisson works as approximation when p is small
 
-- <img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/c5e59099-a956-4a3c-8065-952f1f7a78d3" />
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/fb0df606-9459-4aac-ba13-a69d5a51ece5" />
 
 
 **Geometric p=0.05**
@@ -122,7 +122,8 @@ Open index.html in a browser. Thats it.
 - bars keep going down, long tail on the right
 
 **Inference:** defects are rare at p=0.05 (about 1 per batch of 20). If p doubles the defects go up a lot, so the defect rate needs monitoring.
-<img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/8237b4ae-ed89-4cc0-95ad-73886080b4bd" />
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/86be3c59-6208-46c5-abe9-c5f25b9d375c" />
+
 
 
 ---
@@ -137,27 +138,34 @@ Data: 1200 requests, 27 failed so p = 27/1200 = 0.0225. 36 alerts in 12 interval
 - P(X=3) = 0.2026
 - P(X≤3) = 0.8112
 
-- <img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/ce2f1da7-2733-4e49-b8bb-3e099acf9a7c" />
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/1d1e731c-ce8c-4b7c-a0a1-f9af5369f08c" />
 
 
 **Poisson λ=3**
-- P(X=0) = 0.0498, P(X=1) = 0.1494, P(X=2) = 0.2240, P(X=3) = 0.2240
+- P(X=0) = 0.0498,P(X=1) = 0.1494, P(X=2) = 0.2240, P(X=3) = 0.2240
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/bc4d1c28-6188-4349-a197-26721d38d231" />
+
 - P(X=5) = 0.1008
 - P(4 or more) = 0.3528
 
 **Comparing λ = 2, 3, 5**
 - bigger λ means graph moves right and gets flatter and wider
-- P(5 or more alerts): λ=2 → 0.0527, λ=3 → 0.1847, λ=5 → 0.5595
+- P(5 or more alerts): λ=2 → 0.0527
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/ebae22cc-5c8e-405b-b578-556c4a8e247d" />
+ - λ=3 → 0.1847
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/d9e2271e-471f-4b4f-9ac7-23c495c16e73" />
+ - λ=5 → 0.5595
+ - <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/a85d40f8-f745-4751-8654-26d64b09f18d" />
 
-- <img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/224ef814-f4a1-4d53-8c5e-b91f33eef5e5" />
 
+- 
 
 **Geometric p=0.8**
 - mean = 1.25
 - P(X=1) = 0.8, P(X=2) = 0.16, P(X=3) = 0.032
 - P(success within 3 tries) = 0.992
 
-- <img width="1026" height="380" alt="image" src="https://github.com/user-attachments/assets/12283333-43b4-4bfd-be35-e2ae3aeaf416" />
+- <img width="1024" height="372" alt="image" src="https://github.com/user-attachments/assets/952cfbf1-2778-4dd4-8a22-f056ea820cc5" />
 
 
 **Inference:**

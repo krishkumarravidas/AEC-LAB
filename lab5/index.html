@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discrete Probability Distributions</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --highlight: #f59e0b;
+      --highlight-dark: #d97706;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .app-brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+      background-color: #f1f5f9;
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+      background-color: var(--primary-light);
+      font-weight: 600;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography & Section Styles */
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: var(--text-main);
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Home Page Cards */
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .module-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .module-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .module-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .btn-module {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      background-color: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-module:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Forms & Inputs */
+    .inputs-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      width: 100%;
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .param-control-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .param-input-number {
+      width: 90px !important;
+      flex-shrink: 0;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #ffffff;
+    }
+
+    .param-slider {
+      flex: 1;
+      height: 6px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .input-group input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .input-group input.is-invalid {
+      border-color: var(--danger);
+      background-color: #fffaf0;
+    }
+
+    .input-error {
+      color: var(--danger);
+      font-size: 0.78rem;
+      font-weight: 500;
+      min-height: 1rem;
+      margin-top: 0.1rem;
+    }
+
+    .btn-reset {
+      padding: 0.4rem 0.85rem;
+      background-color: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-reset:hover {
+      background-color: #e2e8f0;
+    }
+
+    /* Selected line */
+    .selected-line {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border-left: 4px solid var(--primary);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-formula {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-bottom: 0.4rem;
+      font-family: monospace;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+
+    /* Calculator sections */
+    .calc-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .calc-k-group {
+      flex: 0 0 200px;
+    }
+
+    .calc-result-box {
+      flex: 1 1 260px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+    }
+
+    .calc-math-expr {
+      font-family: monospace;
+      font-size: 0.92rem;
+      color: #1e293b;
+      margin-bottom: 0.4rem;
+      background: #f1f5f9;
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      display: inline-block;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .calc-plain-sentence {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.45;
+    }
+
+    .sum-badge {
+      display: inline-block;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #047857;
+      background: #d1fae5;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* Graph Section & Toolbar */
+    .graph-header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .graph-ctrl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.6rem;
+      background-color: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .graph-ctrl-btn:hover {
+      background-color: #e2e8f0;
+      border-color: #cbd5e1;
+    }
+
+    .graph-ctrl-btn.active {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .btn-fullscreen {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .btn-fullscreen:hover {
+      background-color: var(--primary-hover);
+      color: #ffffff;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 380px;
+      min-height: 220px;
+      max-height: 850px;
+      width: 100%;
+      margin-top: 0.5rem;
+      resize: vertical;
+      overflow: hidden;
+      border: 1px dashed transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    .chart-container:hover {
+      border-color: #cbd5e1;
+    }
+
+    .chart-resize-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.3rem 0.5rem;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .resize-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .graph-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      text-align: right;
+      font-style: italic;
+    }
+
+    .support-statement {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 0.6rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 1.25rem;
+    }
+
+    /* FULLSCREEN MODAL OVERLAY STYLES */
+    .card.fullscreen-active {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      z-index: 999999 !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: #ffffff !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 1.25rem 2rem !important;
+      box-shadow: none !important;
+    }
+
+    .card.fullscreen-active .chart-container {
+      flex: 1 1 auto !important;
+      height: 100% !important;
+      max-height: none !important;
+      min-height: 0 !important;
+      resize: none !important;
+    }
+
+    .card.fullscreen-active .chart-resize-bar {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-link {
+        font-size: 0.85rem;
+        padding: 0.35rem 0.65rem;
+      }
+      .chart-container {
+        height: 280px;
+      }
+      .calc-k-group {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#home" class="app-brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"/>
+          <path d="M18 17V9"/>
+          <path d="M13 17V5"/>
+          <path d="M8 17v-3"/>
+        </svg>
+        Discrete Probability Distributions
+      </a>
+      <nav id="mainNav">
+        <a href="#home" class="nav-link" data-target="home">Home</a>
+        <a href="#binomial" class="nav-link" data-target="binomial">Binomial</a>
+        <a href="#poisson" class="nav-link" data-target="poisson">Poisson</a>
+        <a href="#geometric" class="nav-link" data-target="geometric">Geometric</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========================================== -->
+    <!-- HOME PAGE -->
+    <!-- ========================================== -->
+    <section id="page-home" class="page">
+      <h1 class="page-title">Discrete Probability Distributions</h1>
+      <p class="page-subtitle">Educational explorer and lab calculator for discrete statistical models.</p>
+
+      <div class="home-grid">
+        <!-- Binomial Card -->
+        <div class="module-card">
+          <div>
+            <h3>Binomial Distribution</h3>
+            <p>Models the number of successes in a fixed number <em>n</em> of independent Bernoulli trials with constant success probability <em>p</em>.</p>
+          </div>
+          <a href="#binomial" class="btn-module">Open Binomial Module →</a>
+        </div>
+
+        <!-- Poisson Card -->
+        <div class="module-card">
+          <div>
+            <h3>Poisson Distribution</h3>
+            <p>Models the number of events occurring within a fixed interval of time or space at a constant average rate λ.</p>
+          </div>
+          <a href="#poisson" class="btn-module">Open Poisson Module →</a>
+        </div>
+
+        <!-- Geometric Card -->
+        <div class="module-card">
+          <div>
+            <h3>Geometric Distribution</h3>
+            <p>Models the trial number on which the first success occurs in a sequence of independent Bernoulli trials with probability <em>p</em>.</p>
+          </div>
+          <a href="#geometric" class="btn-module">Open Geometric Module →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- BINOMIAL MODULE -->
+    <!-- ========================================== -->
+    <section id="page-binomial" class="page">
+      <h1 class="page-title">Binomial Distribution</h1>
+      <p class="page-subtitle">X ~ Binomial(n, p) on support X ∈ {0, 1, 2, ..., n}</p>
+
+      <!-- 1. Inputs -->
+      <div class="card">
+        <div class="card-title">
+          <span>Parameters (Editable via number inputs, sliders, or graph clicks)</span>
+          <button type="button" class="btn-reset" id="bin-reset-btn">Reset to defaults</button>
+        </div>
+        <div class="inputs-bar">
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="bin-input-n">Number of trials (n): [1 to 1000]</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="bin-input-n" class="param-input-number" value="20" min="1" max="1000" step="1">
+              <input type="range" id="bin-slider-n" class="param-slider" value="20" min="1" max="100" step="1">
+            </div>
+            <span class="input-error" id="bin-error-n"></span>
+          </div>
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="bin-input-p">Success probability (p): [0 to 1]</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="bin-input-p" class="param-input-number" value="0.35" min="0" max="1" step="0.01">
+              <input type="range" id="bin-slider-p" class="param-slider" value="0.35" min="0" max="1" step="0.01">
+            </div>
+            <span class="input-error" id="bin-error-p"></span>
+          </div>
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="bin-param-k">Successes threshold (k): [0 to n]</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="bin-param-k" class="param-input-number" value="7" min="0" max="20" step="1">
+              <input type="range" id="bin-slider-k" class="param-slider" value="7" min="0" max="20" step="1">
+            </div>
+            <span class="input-error" id="bin-error-param-k"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dependent sections container -->
+      <div id="bin-dependent-content">
+        <!-- 2. Selected Line -->
+        <div class="selected-line" id="bin-selected-line">Selected: n = 20, p = 0.35, k = 7</div>
+
+        <!-- 3. Statistic Cards -->
+        <div class="stats-grid" id="bin-stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Mean (μ)</div>
+            <div class="stat-formula">E[X] = np</div>
+            <div class="stat-value" id="bin-stat-mean">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Variance (σ²)</div>
+            <div class="stat-formula">Var(X) = np(1−p)</div>
+            <div class="stat-value" id="bin-stat-var">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Standard Deviation (σ)</div>
+            <div class="stat-formula">Std = √variance</div>
+            <div class="stat-value" id="bin-stat-std">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Second Moment E[X²]</div>
+            <div class="stat-formula">Var + Mean²</div>
+            <div class="stat-value" id="bin-stat-ex2">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Skewness (γ₁)</div>
+            <div class="stat-formula">(1−2p)/√(np(1−p))</div>
+            <div class="stat-value" id="bin-stat-skew">-</div>
+          </div>
+        </div>
+
+        <!-- 4. PMF Calculator -->
+        <div class="card">
+          <div class="card-title">PMF Calculator</div>
+          <div class="calc-row">
+            <div class="input-group calc-k-group">
+              <label for="bin-input-k">Number of successes (k):</label>
+              <div class="param-control-row">
+                <input type="number" id="bin-input-k" class="param-input-number" value="7" min="0" max="20" step="1">
+              </div>
+              <span class="input-error" id="bin-error-k"></span>
+            </div>
+            <div class="calc-result-box" id="bin-pmf-box">
+              <div class="calc-math-expr" id="bin-pmf-expr">P(X = k) = C(n, k) p^k (1−p)^(n−k)</div>
+              <div class="calc-plain-sentence" id="bin-pmf-sentence">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. CDF Calculator -->
+        <div class="card">
+          <div class="card-title">CDF Calculator</div>
+          <div class="calc-row">
+            <div class="input-group calc-k-group">
+              <label for="bin-input-k-cdf">Threshold (k):</label>
+              <div class="param-control-row">
+                <input type="number" id="bin-input-k-cdf" class="param-input-number" value="7" min="0" max="20" step="1">
+              </div>
+              <span class="input-error" id="bin-error-k-cdf"></span>
+            </div>
+            <div class="calc-result-box" id="bin-cdf-box">
+              <div class="calc-math-expr" id="bin-cdf-expr">P(X ≤ k) = -, P(X > k) = -</div>
+              <div class="calc-plain-sentence">P(X ≤ k) means the probability of getting k or fewer successes.</div>
+              <div class="sum-badge" id="bin-cdf-sum">P(X ≤ k) + P(X > k) = 1.000000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. PMF Graph with Resize & Fullscreen Controls -->
+        <div class="card" id="bin-graph-card">
+          <div class="card-title">
+            <span>Probability Mass Function (PMF)</span>
+            <div class="graph-header-controls">
+              <span>Resize:</span>
+              <button type="button" class="graph-ctrl-btn" data-resize-target="bin-chart-container" data-height="280">Compact</button>
+              <button type="button" class="graph-ctrl-btn active" data-resize-target="bin-chart-container" data-height="380">Standard</button>
+              <button type="button" class="graph-ctrl-btn" data-resize-target="bin-chart-container" data-height="520">Large</button>
+              <button type="button" class="graph-ctrl-btn btn-fullscreen" id="bin-fullscreen-btn" title="View graph in full screen">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                <span>Fullscreen</span>
+              </button>
+            </div>
+          </div>
+          <div class="chart-container" id="bin-chart-container">
+            <canvas id="bin-chart"></canvas>
+          </div>
+          <div class="chart-resize-bar">
+            <span class="resize-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+              Drag bottom edge to freely resize graph vertically
+            </span>
+            <span>Click any bar to select and edit k</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- POISSON MODULE -->
+    <!-- ========================================== -->
+    <section id="page-poisson" class="page">
+      <h1 class="page-title">Poisson Distribution</h1>
+      <p class="page-subtitle">X ~ Poisson(λ) on support X ∈ {0, 1, 2, ...}</p>
+
+      <!-- 1. Inputs -->
+      <div class="card">
+        <div class="card-title">
+          <span>Parameters (Editable via number inputs, sliders, or graph clicks)</span>
+          <button type="button" class="btn-reset" id="poi-reset-btn">Reset to defaults</button>
+        </div>
+        <div class="inputs-bar">
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="poi-input-lambda">Average rate (λ): (0 &lt; λ ≤ 500)</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="poi-input-lambda" class="param-input-number" value="4" min="0.001" max="500" step="0.1">
+              <input type="range" id="poi-slider-lambda" class="param-slider" value="4" min="0.1" max="50" step="0.1">
+            </div>
+            <span class="input-error" id="poi-error-lambda"></span>
+          </div>
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="poi-param-k">Number of events (k): [k ≥ 0]</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="poi-param-k" class="param-input-number" value="4" min="0" step="1">
+              <input type="range" id="poi-slider-k" class="param-slider" value="4" min="0" max="30" step="1">
+            </div>
+            <span class="input-error" id="poi-error-param-k"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dependent sections container -->
+      <div id="poi-dependent-content">
+        <!-- 2. Selected Line -->
+        <div class="selected-line" id="poi-selected-line">Selected: λ = 4, k = 4</div>
+
+        <!-- 3. Statistic Cards -->
+        <div class="stats-grid" id="poi-stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Mean (μ)</div>
+            <div class="stat-formula">E[X] = λ</div>
+            <div class="stat-value" id="poi-stat-mean">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Variance (σ²)</div>
+            <div class="stat-formula">Var(X) = λ</div>
+            <div class="stat-value" id="poi-stat-var">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Standard Deviation (σ)</div>
+            <div class="stat-formula">Std = √λ</div>
+            <div class="stat-value" id="poi-stat-std">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Second Moment E[X²]</div>
+            <div class="stat-formula">Var + Mean² = λ + λ²</div>
+            <div class="stat-value" id="poi-stat-ex2">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Skewness (γ₁)</div>
+            <div class="stat-formula">1/√λ</div>
+            <div class="stat-value" id="poi-stat-skew">-</div>
+          </div>
+        </div>
+
+        <!-- 4. PMF Calculator -->
+        <div class="card">
+          <div class="card-title">PMF Calculator</div>
+          <div class="calc-row">
+            <div class="input-group calc-k-group">
+              <label for="poi-input-k">Number of events (k):</label>
+              <div class="param-control-row">
+                <input type="number" id="poi-input-k" class="param-input-number" value="4" min="0" step="1">
+              </div>
+              <span class="input-error" id="poi-error-k"></span>
+            </div>
+            <div class="calc-result-box" id="poi-pmf-box">
+              <div class="calc-math-expr" id="poi-pmf-expr">P(X = k) = e^(−λ) λ^k / k!</div>
+              <div class="calc-plain-sentence" id="poi-pmf-sentence">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. CDF Calculator -->
+        <div class="card">
+          <div class="card-title">CDF Calculator</div>
+          <div class="calc-row">
+            <div class="input-group calc-k-group">
+              <label for="poi-input-k-cdf">Threshold (k):</label>
+              <div class="param-control-row">
+                <input type="number" id="poi-input-k-cdf" class="param-input-number" value="4" min="0" step="1">
+              </div>
+              <span class="input-error" id="poi-error-k-cdf"></span>
+            </div>
+            <div class="calc-result-box" id="poi-cdf-box">
+              <div class="calc-math-expr" id="poi-cdf-expr">P(X ≤ k) = -, P(X > k) = -</div>
+              <div class="calc-plain-sentence">P(X ≤ k) means the probability of getting k or fewer events.</div>
+              <div class="sum-badge" id="poi-cdf-sum">P(X ≤ k) + P(X > k) = 1.000000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. PMF Graph with Resize & Fullscreen Controls -->
+        <div class="card" id="poi-graph-card">
+          <div class="card-title">
+            <span>Probability Mass Function (PMF)</span>
+            <div class="graph-header-controls">
+              <span>Resize:</span>
+              <button type="button" class="graph-ctrl-btn" data-resize-target="poi-chart-container" data-height="280">Compact</button>
+              <button type="button" class="graph-ctrl-btn active" data-resize-target="poi-chart-container" data-height="380">Standard</button>
+              <button type="button" class="graph-ctrl-btn" data-resize-target="poi-chart-container" data-height="520">Large</button>
+              <button type="button" class="graph-ctrl-btn btn-fullscreen" id="poi-fullscreen-btn" title="View graph in full screen">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                <span>Fullscreen</span>
+              </button>
+            </div>
+          </div>
+          <div class="chart-container" id="poi-chart-container">
+            <canvas id="poi-chart"></canvas>
+          </div>
+          <div class="chart-resize-bar">
+            <span class="resize-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+              Drag bottom edge to freely resize graph vertically
+            </span>
+            <span>Click any bar to select and edit k</span>
+          </div>
+          <div class="graph-note">Graph truncated where the remaining probability is below 0.01%.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- GEOMETRIC MODULE -->
+    <!-- ========================================== -->
+    <section id="page-geometric" class="page">
+      <h1 class="page-title">Geometric Distribution</h1>
+      <p class="page-subtitle">First success model</p>
+      
+      <!-- Explicit Support Statement -->
+      <div class="support-statement">
+        X = the trial on which the first success occurs, support 1, 2, 3, …
+      </div>
+
+      <!-- 1. Inputs -->
+      <div class="card">
+        <div class="card-title">
+          <span>Parameters (Editable via number inputs, sliders, or graph clicks)</span>
+          <button type="button" class="btn-reset" id="geo-reset-btn">Reset to defaults</button>
+        </div>
+        <div class="inputs-bar">
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="geo-input-p">Success probability (p): (0 &lt; p ≤ 1)</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="geo-input-p" class="param-input-number" value="0.3" min="0.0001" max="1" step="0.01">
+              <input type="range" id="geo-slider-p" class="param-slider" value="0.3" min="0.01" max="1" step="0.01">
+            </div>
+            <span class="input-error" id="geo-error-p"></span>
+          </div>
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="geo-param-k">Trial number (k): [k ≥ 1]</label>
+            </div>
+            <div class="param-control-row">
+              <input type="number" id="geo-param-k" class="param-input-number" value="1" min="1" step="1">
+              <input type="range" id="geo-slider-k" class="param-slider" value="1" min="1" max="25" step="1">
+            </div>
+            <span class="input-error" id="geo-error-param-k"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dependent sections container -->
+      <div id="geo-dependent-content">
+        <!-- 2. Selected Line -->
+        <div class="selected-line" id="geo-selected-line">Selected: p = 0.3, k = 1</div>
+
+        <!-- 3. Statistic Cards -->
+        <div class="stats-grid" id="geo-stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Mean (μ)</div>
+            <div class="stat-formula">E[X] = 1/p</div>
+            <div class="stat-value" id="geo-stat-mean">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Variance (σ²)</div>
+            <div class="stat-formula">Var(X) = (1−p)/p²</div>
+            <div class="stat-value" id="geo-stat-var">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Standard Deviation (σ)</div>
+            <div class="stat-formula">Std = √variance</div>
+            <div class="stat-value" id="geo-stat-std">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Second Moment E[X²]</div>
+            <div class="stat-formula">Var + Mean²</div>
+            <div class="stat-value" id="geo-stat-ex2">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Skewness (γ₁)</div>
+            <div class="stat-formula">(2−p)/√(1−p)</div>
+            <div class="stat-value" id="geo-stat-skew">-</div>
+          </div>
+        </div>
+
+        <!-- 4. PMF Calculator -->
+        <div class="card">
+          <div class="card-title">PMF Calculator</div>
+          <div class="calc-row">
+            <div class="input-group calc-k-group">
+              <label for="geo-input-k">Trial number (k):</label>
+              <div class="param-control-row">
+                <input type="number" id="geo-input-k" class="param-input-number" value="1" min="1" step="1">
+              </div>
+              <span class="input-error" id="geo-error-k"></span>
+            </div>
+            <div class="calc-result-box" id="geo-pmf-box">
+              <div class="calc-math-expr" id="geo-pmf-expr">P(X = k) = (1−p)^(k−1)·p</div>
+              <div class="calc-plain-sentence" id="geo-pmf-sentence">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. CDF Calculator -->
+        <div class="card">
+          <div class="card-title">CDF Calculator</div>
+          <div class="calc-row">
+            <div class="input-group calc-k-group">
+              <label for="geo-input-k-cdf">Threshold (k):</label>
+              <div class="param-control-row">
+                <input type="number" id="geo-input-k-cdf" class="param-input-number" value="1" min="1" step="1">
+              </div>
+              <span class="input-error" id="geo-error-k-cdf"></span>
+            </div>
+            <div class="calc-result-box" id="geo-cdf-box">
+              <div class="calc-math-expr" id="geo-cdf-expr">P(X ≤ k) = 1 − (1−p)^k, P(X > k) = (1−p)^k</div>
+              <div class="calc-plain-sentence">P(X ≤ k) means the probability that the first success occurs within the first k trials.</div>
+              <div class="sum-badge" id="geo-cdf-sum">P(X ≤ k) + P(X > k) = 1.000000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. PMF Graph with Resize & Fullscreen Controls -->
+        <div class="card" id="geo-graph-card">
+          <div class="card-title">
+            <span>Probability Mass Function (PMF)</span>
+            <div class="graph-header-controls">
+              <span>Resize:</span>
+              <button type="button" class="graph-ctrl-btn" data-resize-target="geo-chart-container" data-height="280">Compact</button>
+              <button type="button" class="graph-ctrl-btn active" data-resize-target="geo-chart-container" data-height="380">Standard</button>
+              <button type="button" class="graph-ctrl-btn" data-resize-target="geo-chart-container" data-height="520">Large</button>
+              <button type="button" class="graph-ctrl-btn btn-fullscreen" id="geo-fullscreen-btn" title="View graph in full screen">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                <span>Fullscreen</span>
+              </button>
+            </div>
+          </div>
+          <div class="chart-container" id="geo-chart-container">
+            <canvas id="geo-chart"></canvas>
+          </div>
+          <div class="chart-resize-bar">
+            <span class="resize-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+              Drag bottom edge to freely resize graph vertically
+            </span>
+            <span>Click any bar to select and edit k</span>
+          </div>
+          <div class="graph-note">Graph truncated where cumulative probability reaches ≥ 99.9% (at most 100 trials).</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ==========================================================================
+       NUMERICAL STABILITY UTILITIES (Log-Gamma & Log-Factorial)
+       ========================================================================== */
+    function logGamma(z) {
+      const p = [
+        0.99999999999980993,
+        676.5203681218851,
+        -1259.1392167224028,
+        771.32342877765313,
+        -176.61502916214059,
+        12.507343278686905,
+        -0.138571095836524,
+        9.9843695780195716e-6,
+        1.5056327351493116e-7
+      ];
+      if (z < 0.5) {
+        return Math.log(Math.PI / Math.sin(Math.PI * z)) - logGamma(1 - z);
+      }
+      z -= 1;
+      let x = p[0];
+      for (let i = 1; i < p.length; i++) {
+        x += p[i] / (z + i);
+      }
+      const t = z + 7.5;
+      return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+    }
+
+    const logFactCache = new Float64Array(1005);
+    logFactCache[0] = 0;
+    for (let i = 1; i <= 1004; i++) {
+      logFactCache[i] = logFactCache[i - 1] + Math.log(i);
+    }
+
+    function logFactorial(n) {
+      if (n < 0) return NaN;
+      if (n <= 1000) return logFactCache[n];
+      return logGamma(n + 1);
+    }
+
+    function logBinomialCoeff(n, k) {
+      if (k < 0 || k > n) return -Infinity;
+      if (k === 0 || k === n) return 0;
+      return logFactorial(n) - logFactorial(k) - logFactorial(n - k);
+    }
+
+    function calcBinomialPMF(n, p, k) {
+      if (k < 0 || k > n) return 0;
+      if (p === 0) return k === 0 ? 1 : 0;
+      if (p === 1) return k === n ? 1 : 0;
+      const logP = logBinomialCoeff(n, k) + k * Math.log(p) + (n - k) * Math.log(1 - p);
+      return Math.exp(logP);
+    }
+
+    function calcPoissonPMF(lambda, k) {
+      if (k < 0) return 0;
+      if (lambda === 0) return k === 0 ? 1 : 0;
+      const logP = -lambda + k * Math.log(lambda) - logFactorial(k);
+      return Math.exp(logP);
+    }
+
+    function calcGeometricPMF(p, k) {
+      if (k < 1) return 0;
+      if (p === 1) return k === 1 ? 1 : 0;
+      const logP = (k - 1) * Math.log(1 - p) + Math.log(p);
+      return Math.exp(logP);
+    }
+
+    function formatProbability(val) {
+      if (val === null || val === undefined || isNaN(val)) return '0.000000';
+      if (val === 0) return '0.000000';
+      const absVal = Math.abs(val);
+      if (absVal < 1e-6) {
+        return val.toExponential(4);
+      }
+      return val.toFixed(6);
+    }
+
+    function formatStat(val, decimals = 4) {
+      if (val === null || val === undefined || isNaN(val) || !isFinite(val)) return '-';
+      if (Number.isInteger(val)) return val.toString();
+      const fixed = val.toFixed(decimals);
+      return parseFloat(fixed).toString() === fixed ? fixed : fixed.replace(/0+$/, '').replace(/\.$/, '');
+    }
+
+    /* ==========================================================================
+       CHART.JS MEAN LINE PLUGIN
+       ========================================================================== */
+    const meanLinePlugin = {
+      id: 'meanLinePlugin',
+      afterDraw(chart) {
+        const meanVal = chart.config.options.plugins?.meanLine?.value;
+        if (meanVal === undefined || meanVal === null || isNaN(meanVal)) return;
+
+        const ctx = chart.ctx;
+        const xAxis = chart.scales.x;
+        const yAxis = chart.scales.y;
+        const labels = chart.data.labels;
+        if (!labels || labels.length === 0) return;
+
+        const x0 = labels[0];
+        const xLast = labels[labels.length - 1];
+        if (meanVal < x0 || meanVal > xLast) return;
+
+        const indexFloat = meanVal - x0;
+        const floorIdx = Math.floor(indexFloat);
+        const ceilIdx = Math.min(labels.length - 1, floorIdx + 1);
+        const frac = indexFloat - floorIdx;
+        const p1 = xAxis.getPixelForValue(labels[floorIdx]);
+        const p2 = xAxis.getPixelForValue(labels[ceilIdx]);
+        const xPixel = (p1 !== undefined && p2 !== undefined) ? p1 + (p2 - p1) * frac : xAxis.getPixelForValue(Math.round(meanVal));
+
+        if (xPixel === undefined || isNaN(xPixel)) return;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2;
+        ctx.moveTo(xPixel, yAxis.top);
+        ctx.lineTo(xPixel, yAxis.bottom);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+        const labelText = `Mean μ = ${meanVal.toFixed(2)}`;
+        ctx.font = 'bold 11px -apple-system, sans-serif';
+        const textWidth = ctx.measureText(labelText).width;
+        let textX = xPixel;
+        if (textX - textWidth / 2 < xAxis.left + 4) textX = xAxis.left + textWidth / 2 + 4;
+        if (textX + textWidth / 2 > xAxis.right - 4) textX = xAxis.right - textWidth / 2 - 4;
+
+        ctx.fillStyle = 'rgba(254, 242, 242, 0.95)';
+        ctx.fillRect(textX - textWidth / 2 - 4, yAxis.top - 18, textWidth + 8, 16);
+        ctx.strokeStyle = '#fca5a5';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(textX - textWidth / 2 - 4, yAxis.top - 18, textWidth + 8, 16);
+
+        ctx.fillStyle = '#991b1b';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(labelText, textX, yAxis.top - 10);
+        ctx.restore();
+      }
+    };
+    Chart.register(meanLinePlugin);
+
+    /* ==========================================================================
+       ROUTING
+       ========================================================================== */
+    const validRoutes = ['home', 'binomial', 'poisson', 'geometric'];
+
+    function handleRoute() {
+      let hash = window.location.hash.replace('#', '').toLowerCase();
+      if (!validRoutes.includes(hash)) {
+        hash = 'home';
+        window.location.hash = '#home';
+      }
+
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      const activePage = document.getElementById(`page-${hash}`);
+      if (activePage) activePage.classList.add('active');
+
+      document.querySelectorAll('#mainNav .nav-link').forEach(link => {
+        if (link.getAttribute('data-target') === hash) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      if (hash === 'binomial' && binChart) binChart.resize();
+      if (hash === 'poisson' && poiChart) poiChart.resize();
+      if (hash === 'geometric' && geoChart) geoChart.resize();
+    }
+
+    window.addEventListener('hashchange', handleRoute);
+
+    /* ==========================================================================
+       GRAPH RESIZE & FULLSCREEN CONTROLLER
+       ========================================================================== */
+    function setupGraphTools(cardId, containerId, btnFullscreenId, getChartInstance) {
+      const card = document.getElementById(cardId);
+      const container = document.getElementById(containerId);
+      const btnFs = document.getElementById(btnFullscreenId);
+
+      // Resize observer to smoothly auto-resize chart on any container dimension change
+      const ro = new ResizeObserver(() => {
+        const chart = getChartInstance();
+        if (chart) {
+          chart.resize();
+        }
+      });
+      ro.observe(container);
+
+      // Preset Height Buttons
+      card.querySelectorAll(`button[data-resize-target="${containerId}"]`).forEach(btn => {
+        btn.addEventListener('click', () => {
+          card.querySelectorAll(`button[data-resize-target="${containerId}"]`).forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const targetH = btn.getAttribute('data-height');
+          container.style.height = `${targetH}px`;
+          const chart = getChartInstance();
+          if (chart) chart.resize();
+        });
+      });
+
+      // Fullscreen Toggle
+      function isFullscreen() {
+        return document.fullscreenElement === card || card.classList.contains('fullscreen-active');
+      }
+
+      function enterFullscreen() {
+        card.classList.add('fullscreen-active');
+        btnFs.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+          <span>Exit Fullscreen</span>
+        `;
+        if (card.requestFullscreen) {
+          card.requestFullscreen().catch(() => {});
+        }
+        setTimeout(() => {
+          const chart = getChartInstance();
+          if (chart) chart.resize();
+        }, 50);
+      }
+
+      function exitFullscreen() {
+        card.classList.remove('fullscreen-active');
+        btnFs.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <span>Fullscreen</span>
+        `;
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
+        setTimeout(() => {
+          const chart = getChartInstance();
+          if (chart) chart.resize();
+        }, 50);
+      }
+
+      btnFs.addEventListener('click', () => {
+        if (isFullscreen()) {
+          exitFullscreen();
+        } else {
+          enterFullscreen();
+        }
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && card.classList.contains('fullscreen-active')) {
+          exitFullscreen();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isFullscreen()) {
+          exitFullscreen();
+        }
+      });
+    }
+
+    /* ==========================================================================
+       MODULE 1: BINOMIAL DISTRIBUTION
+       ========================================================================== */
+    let binChart = null;
+
+    function initBinomial() {
+      const inputN = document.getElementById('bin-input-n');
+      const sliderN = document.getElementById('bin-slider-n');
+      const inputP = document.getElementById('bin-input-p');
+      const sliderP = document.getElementById('bin-slider-p');
+      const paramK = document.getElementById('bin-param-k');
+      const sliderK = document.getElementById('bin-slider-k');
+      const inputK = document.getElementById('bin-input-k');
+      const inputKCdf = document.getElementById('bin-input-k-cdf');
+      const resetBtn = document.getElementById('bin-reset-btn');
+
+      function update(source) {
+        const errorN = document.getElementById('bin-error-n');
+        const errorP = document.getElementById('bin-error-p');
+        const errorParamK = document.getElementById('bin-error-param-k');
+        const errorK = document.getElementById('bin-error-k');
+        const errorKCdf = document.getElementById('bin-error-k-cdf');
+        const depContent = document.getElementById('bin-dependent-content');
+
+        // Sync inputs and sliders
+        if (source === 'slider-n') {
+          inputN.value = sliderN.value;
+        } else if (source === 'input-n') {
+          sliderN.value = inputN.value;
+        }
+
+        if (source === 'slider-p') {
+          inputP.value = sliderP.value;
+        } else if (source === 'input-p') {
+          sliderP.value = inputP.value;
+        }
+
+        if (source === 'slider-k') {
+          paramK.value = sliderK.value;
+          inputK.value = sliderK.value;
+          inputKCdf.value = sliderK.value;
+        } else if (source === 'param-k') {
+          sliderK.value = paramK.value;
+          inputK.value = paramK.value;
+          inputKCdf.value = paramK.value;
+        } else if (source === 'input-k') {
+          paramK.value = inputK.value;
+          sliderK.value = inputK.value;
+          inputKCdf.value = inputK.value;
+        } else if (source === 'input-k-cdf') {
+          paramK.value = inputKCdf.value;
+          sliderK.value = inputKCdf.value;
+          inputK.value = inputKCdf.value;
+        } else if (source === 'graph-click') {
+          sliderK.value = paramK.value;
+          inputK.value = paramK.value;
+          inputKCdf.value = paramK.value;
+        }
+
+        // Validate n
+        const nRaw = inputN.value.trim();
+        const n = Number(nRaw);
+        let nValid = true;
+        if (nRaw === '' || isNaN(n) || !Number.isInteger(n) || n < 1 || n > 1000) {
+          errorN.textContent = 'n must be an integer from 1 to 1000';
+          inputN.classList.add('is-invalid');
+          nValid = false;
+        } else {
+          errorN.textContent = '';
+          inputN.classList.remove('is-invalid');
+          // Dynamically adjust slider max for k to n
+          sliderK.max = n;
+          paramK.max = n;
+          inputK.max = n;
+          inputKCdf.max = n;
+        }
+
+        // Validate p
+        const pRaw = inputP.value.trim();
+        const p = Number(pRaw);
+        let pValid = true;
+        if (pRaw === '' || isNaN(p) || p < 0 || p > 1) {
+          errorP.textContent = 'p must be in [0, 1]';
+          inputP.classList.add('is-invalid');
+          pValid = false;
+        } else {
+          errorP.textContent = '';
+          inputP.classList.remove('is-invalid');
+        }
+
+        const paramsValid = nValid && pValid;
+
+        if (!paramsValid) {
+          depContent.style.display = 'none';
+          return;
+        }
+        depContent.style.display = 'block';
+
+        // Validate k
+        const kRaw = paramK.value.trim();
+        const k = Number(kRaw);
+        let kValid = true;
+        if (kRaw === '' || isNaN(k) || !Number.isInteger(k) || k < 0 || k > n) {
+          const kErrMsg = `k must be an integer with 0 ≤ k ≤ ${n}`;
+          errorParamK.textContent = kErrMsg;
+          errorK.textContent = kErrMsg;
+          errorKCdf.textContent = kErrMsg;
+          paramK.classList.add('is-invalid');
+          inputK.classList.add('is-invalid');
+          inputKCdf.classList.add('is-invalid');
+          kValid = false;
+        } else {
+          errorParamK.textContent = '';
+          errorK.textContent = '';
+          errorKCdf.textContent = '';
+          paramK.classList.remove('is-invalid');
+          inputK.classList.remove('is-invalid');
+          inputKCdf.classList.remove('is-invalid');
+        }
+
+        document.getElementById('bin-selected-line').textContent =
+          kValid ? `Selected: n = ${n}, p = ${p}, k = ${k}` : `Selected: n = ${n}, p = ${p}`;
+
+        const mean = n * p;
+        const variance = n * p * (1 - p);
+        const std = Math.sqrt(variance);
+        const ex2 = variance + mean * mean;
+
+        document.getElementById('bin-stat-mean').textContent = formatStat(mean, 4);
+        document.getElementById('bin-stat-var').textContent = formatStat(variance, 4);
+        document.getElementById('bin-stat-std').textContent = formatStat(std, 4);
+        document.getElementById('bin-stat-ex2').textContent = formatStat(ex2, 4);
+
+        const skewEl = document.getElementById('bin-stat-skew');
+        if (p === 0 || p === 1 || variance === 0) {
+          skewEl.textContent = 'Undefined (variance = 0)';
+        } else {
+          const skew = (1 - 2 * p) / Math.sqrt(variance);
+          skewEl.textContent = formatStat(skew, 4);
+        }
+
+        const pmfBox = document.getElementById('bin-pmf-box');
+        const cdfBox = document.getElementById('bin-cdf-box');
+
+        if (!kValid) {
+          pmfBox.style.display = 'none';
+          cdfBox.style.display = 'none';
+        } else {
+          pmfBox.style.display = 'block';
+          cdfBox.style.display = 'block';
+
+          const probK = calcBinomialPMF(n, p, k);
+          const probKFormatted = formatProbability(probK);
+
+          document.getElementById('bin-pmf-expr').textContent =
+            `P(X = ${k}) = C(${n}, ${k}) · (${p})^${k} · (1 − ${p})^(${n} − ${k}) = ${probKFormatted}`;
+          document.getElementById('bin-pmf-sentence').textContent =
+            `The probability of getting exactly ${k} successes in ${n} trials is ${probKFormatted}.`;
+
+          let cdfProb = 0;
+          for (let i = 0; i <= k; i++) {
+            cdfProb += calcBinomialPMF(n, p, i);
+          }
+          if (cdfProb > 1) cdfProb = 1;
+          const cdfFormatted = formatProbability(cdfProb);
+          const cdfCompFormatted = (1 - parseFloat(cdfFormatted)).toFixed(6);
+
+          document.getElementById('bin-cdf-expr').textContent =
+            `P(X ≤ ${k}) = ${cdfFormatted},  P(X > ${k}) = 1 − P(X ≤ ${k}) = ${cdfCompFormatted}`;
+          document.getElementById('bin-cdf-sum').textContent =
+            `P(X ≤ ${k}) + P(X > ${k}) = 1.000000`;
+        }
+
+        renderBinomialChart(n, p, kValid ? k : -1, mean);
+      }
+
+      function renderBinomialChart(n, p, highlightedK, mean) {
+        const labels = [];
+        const data = [];
+        const bgColors = [];
+        const borderColors = [];
+
+        for (let i = 0; i <= n; i++) {
+          labels.push(i);
+          const prob = calcBinomialPMF(n, p, i);
+          data.push(prob);
+          if (i === highlightedK) {
+            bgColors.push('rgba(245, 158, 11, 0.9)');
+            borderColors.push('#d97706');
+          } else {
+            bgColors.push('rgba(37, 99, 235, 0.65)');
+            borderColors.push('#1d4ed8');
+          }
+        }
+
+        const ctx = document.getElementById('bin-chart').getContext('2d');
+        if (binChart) {
+          binChart.destroy();
+        }
+
+        binChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Probability P(X)',
+              data: data,
+              backgroundColor: bgColors,
+              borderColor: borderColors,
+              borderWidth: 1,
+              borderRadius: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            onClick: (e, elements) => {
+              if (elements && elements.length > 0) {
+                const clickedIdx = elements[0].index;
+                const clickedVal = labels[clickedIdx];
+                paramK.value = clickedVal;
+                update('graph-click');
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              meanLine: { value: mean },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    return `X = ${items[0].label}`;
+                  },
+                  label: function(item) {
+                    return `P(X=${item.label}) = ${formatProbability(item.parsed.y)}`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Number of successes X',
+                  font: { weight: '600', size: 12 }
+                },
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: n > 100 ? 25 : undefined,
+                  maxRotation: 0
+                },
+                grid: { display: false }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Probability P(X)',
+                  font: { weight: '600', size: 12 }
+                },
+                beginAtZero: true,
+                ticks: {
+                  callback: function(val) {
+                    return val.toFixed(3);
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Event listeners for bidirectional live editing
+      inputN.addEventListener('input', () => update('input-n'));
+      sliderN.addEventListener('input', () => update('slider-n'));
+      inputP.addEventListener('input', () => update('input-p'));
+      sliderP.addEventListener('input', () => update('slider-p'));
+      paramK.addEventListener('input', () => update('param-k'));
+      sliderK.addEventListener('input', () => update('slider-k'));
+      inputK.addEventListener('input', () => update('input-k'));
+      inputKCdf.addEventListener('input', () => update('input-k-cdf'));
+
+      resetBtn.addEventListener('click', () => {
+        inputN.value = '20';
+        sliderN.value = '20';
+        inputP.value = '0.35';
+        sliderP.value = '0.35';
+        paramK.value = '7';
+        sliderK.value = '7';
+        inputK.value = '7';
+        inputKCdf.value = '7';
+        update('reset');
+      });
+
+      setupGraphTools('bin-graph-card', 'bin-chart-container', 'bin-fullscreen-btn', () => binChart);
+
+      update('init');
+    }
+
+    /* ==========================================================================
+       MODULE 2: POISSON DISTRIBUTION
+       ========================================================================== */
+    let poiChart = null;
+
+    function initPoisson() {
+      const inputLambda = document.getElementById('poi-input-lambda');
+      const sliderLambda = document.getElementById('poi-slider-lambda');
+      const paramK = document.getElementById('poi-param-k');
+      const sliderK = document.getElementById('poi-slider-k');
+      const inputK = document.getElementById('poi-input-k');
+      const inputKCdf = document.getElementById('poi-input-k-cdf');
+      const resetBtn = document.getElementById('poi-reset-btn');
+
+      function update(source) {
+        const errorLambda = document.getElementById('poi-error-lambda');
+        const errorParamK = document.getElementById('poi-error-param-k');
+        const errorK = document.getElementById('poi-error-k');
+        const errorKCdf = document.getElementById('poi-error-k-cdf');
+        const depContent = document.getElementById('poi-dependent-content');
+
+        if (source === 'slider-lambda') {
+          inputLambda.value = sliderLambda.value;
+        } else if (source === 'input-lambda') {
+          if (Number(inputLambda.value) <= 50) sliderLambda.value = inputLambda.value;
+        }
+
+        if (source === 'slider-k') {
+          paramK.value = sliderK.value;
+          inputK.value = sliderK.value;
+          inputKCdf.value = sliderK.value;
+        } else if (source === 'param-k') {
+          if (Number(paramK.value) <= 30) sliderK.value = paramK.value;
+          inputK.value = paramK.value;
+          inputKCdf.value = paramK.value;
+        } else if (source === 'input-k') {
+          paramK.value = inputK.value;
+          if (Number(inputK.value) <= 30) sliderK.value = inputK.value;
+          inputKCdf.value = inputK.value;
+        } else if (source === 'input-k-cdf') {
+          paramK.value = inputKCdf.value;
+          if (Number(inputKCdf.value) <= 30) sliderK.value = inputKCdf.value;
+          inputK.value = inputKCdf.value;
+        } else if (source === 'graph-click') {
+          if (Number(paramK.value) <= 30) sliderK.value = paramK.value;
+          inputK.value = paramK.value;
+          inputKCdf.value = paramK.value;
+        }
+
+        const lRaw = inputLambda.value.trim();
+        const lambda = Number(lRaw);
+        let lambdaValid = true;
+        if (lRaw === '' || isNaN(lambda) || lambda <= 0 || lambda > 500) {
+          errorLambda.textContent = 'λ must be > 0 and ≤ 500';
+          inputLambda.classList.add('is-invalid');
+          lambdaValid = false;
+        } else {
+          errorLambda.textContent = '';
+          inputLambda.classList.remove('is-invalid');
+        }
+
+        if (!lambdaValid) {
+          depContent.style.display = 'none';
+          return;
+        }
+        depContent.style.display = 'block';
+
+        const kRaw = paramK.value.trim();
+        const k = Number(kRaw);
+        let kValid = true;
+        if (kRaw === '' || isNaN(k) || !Number.isInteger(k) || k < 0) {
+          const kErrMsg = 'k must be an integer ≥ 0';
+          errorParamK.textContent = kErrMsg;
+          errorK.textContent = kErrMsg;
+          errorKCdf.textContent = kErrMsg;
+          paramK.classList.add('is-invalid');
+          inputK.classList.add('is-invalid');
+          inputKCdf.classList.add('is-invalid');
+          kValid = false;
+        } else {
+          errorParamK.textContent = '';
+          errorK.textContent = '';
+          errorKCdf.textContent = '';
+          paramK.classList.remove('is-invalid');
+          inputK.classList.remove('is-invalid');
+          inputKCdf.classList.remove('is-invalid');
+        }
+
+        document.getElementById('poi-selected-line').textContent =
+          kValid ? `Selected: λ = ${lambda}, k = ${k}` : `Selected: λ = ${lambda}`;
+
+        const mean = lambda;
+        const variance = lambda;
+        const std = Math.sqrt(lambda);
+        const ex2 = lambda + lambda * lambda;
+        const skew = 1 / Math.sqrt(lambda);
+
+        document.getElementById('poi-stat-mean').textContent = formatStat(mean, 4);
+        document.getElementById('poi-stat-var').textContent = formatStat(variance, 4);
+        document.getElementById('poi-stat-std').textContent = formatStat(std, 4);
+        document.getElementById('poi-stat-ex2').textContent = formatStat(ex2, 4);
+        document.getElementById('poi-stat-skew').textContent = formatStat(skew, 4);
+
+        const pmfBox = document.getElementById('poi-pmf-box');
+        const cdfBox = document.getElementById('poi-cdf-box');
+
+        if (!kValid) {
+          pmfBox.style.display = 'none';
+          cdfBox.style.display = 'none';
+        } else {
+          pmfBox.style.display = 'block';
+          cdfBox.style.display = 'block';
+
+          const probK = calcPoissonPMF(lambda, k);
+          const probKFormatted = formatProbability(probK);
+
+          document.getElementById('poi-pmf-expr').textContent =
+            `P(X = ${k}) = e^(−${lambda}) · (${lambda})^${k} / ${k}! = ${probKFormatted}`;
+          document.getElementById('poi-pmf-sentence').textContent =
+            `The probability of observing exactly ${k} events in the interval is ${probKFormatted}.`;
+
+          let cdfProb = 0;
+          for (let i = 0; i <= k; i++) {
+            cdfProb += calcPoissonPMF(lambda, i);
+          }
+          if (cdfProb > 1) cdfProb = 1;
+          const cdfFormatted = formatProbability(cdfProb);
+          const cdfCompFormatted = (1 - parseFloat(cdfFormatted)).toFixed(6);
+
+          document.getElementById('poi-cdf-expr').textContent =
+            `P(X ≤ ${k}) = ${cdfFormatted},  P(X > ${k}) = 1 − P(X ≤ ${k}) = ${cdfCompFormatted}`;
+          document.getElementById('poi-cdf-sum').textContent =
+            `P(X ≤ ${k}) + P(X > ${k}) = 1.000000`;
+        }
+
+        renderPoissonChart(lambda, kValid ? k : -1, mean);
+      }
+
+      function renderPoissonChart(lambda, highlightedK, mean) {
+        const labels = [];
+        const data = [];
+        const bgColors = [];
+        const borderColors = [];
+
+        let cumSum = 0;
+        let x = 0;
+        const minX = Math.max(10, highlightedK >= 0 ? highlightedK : 0);
+        while (true) {
+          labels.push(x);
+          const p = calcPoissonPMF(lambda, x);
+          cumSum += p;
+          data.push(p);
+
+          if (x === highlightedK) {
+            bgColors.push('rgba(245, 158, 11, 0.9)');
+            borderColors.push('#d97706');
+          } else {
+            bgColors.push('rgba(37, 99, 235, 0.65)');
+            borderColors.push('#1d4ed8');
+          }
+
+          if (cumSum >= 0.9999 && x >= minX) {
+            break;
+          }
+          x++;
+          if (x > 600) break;
+        }
+
+        const ctx = document.getElementById('poi-chart').getContext('2d');
+        if (poiChart) {
+          poiChart.destroy();
+        }
+
+        poiChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Probability P(X)',
+              data: data,
+              backgroundColor: bgColors,
+              borderColor: borderColors,
+              borderWidth: 1,
+              borderRadius: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            onClick: (e, elements) => {
+              if (elements && elements.length > 0) {
+                const clickedIdx = elements[0].index;
+                const clickedVal = labels[clickedIdx];
+                paramK.value = clickedVal;
+                update('graph-click');
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              meanLine: { value: mean },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    return `X = ${items[0].label}`;
+                  },
+                  label: function(item) {
+                    return `P(X=${item.label}) = ${formatProbability(item.parsed.y)}`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Number of events X',
+                  font: { weight: '600', size: 12 }
+                },
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: labels.length > 50 ? 25 : undefined,
+                  maxRotation: 0
+                },
+                grid: { display: false }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Probability P(X)',
+                  font: { weight: '600', size: 12 }
+                },
+                beginAtZero: true,
+                ticks: {
+                  callback: function(val) {
+                    return val.toFixed(3);
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      inputLambda.addEventListener('input', () => update('input-lambda'));
+      sliderLambda.addEventListener('input', () => update('slider-lambda'));
+      paramK.addEventListener('input', () => update('param-k'));
+      sliderK.addEventListener('input', () => update('slider-k'));
+      inputK.addEventListener('input', () => update('input-k'));
+      inputKCdf.addEventListener('input', () => update('input-k-cdf'));
+
+      resetBtn.addEventListener('click', () => {
+        inputLambda.value = '4';
+        sliderLambda.value = '4';
+        paramK.value = '4';
+        sliderK.value = '4';
+        inputK.value = '4';
+        inputKCdf.value = '4';
+        update('reset');
+      });
+
+      setupGraphTools('poi-graph-card', 'poi-chart-container', 'poi-fullscreen-btn', () => poiChart);
+
+      update('init');
+    }
+
+    /* ==========================================================================
+       MODULE 3: GEOMETRIC DISTRIBUTION
+       ========================================================================== */
+    let geoChart = null;
+
+    function initGeometric() {
+      const inputP = document.getElementById('geo-input-p');
+      const sliderP = document.getElementById('geo-slider-p');
+      const paramK = document.getElementById('geo-param-k');
+      const sliderK = document.getElementById('geo-slider-k');
+      const inputK = document.getElementById('geo-input-k');
+      const inputKCdf = document.getElementById('geo-input-k-cdf');
+      const resetBtn = document.getElementById('geo-reset-btn');
+
+      function update(source) {
+        const errorP = document.getElementById('geo-error-p');
+        const errorParamK = document.getElementById('geo-error-param-k');
+        const errorK = document.getElementById('geo-error-k');
+        const errorKCdf = document.getElementById('geo-error-k-cdf');
+        const depContent = document.getElementById('geo-dependent-content');
+
+        if (source === 'slider-p') {
+          inputP.value = sliderP.value;
+        } else if (source === 'input-p') {
+          sliderP.value = inputP.value;
+        }
+
+        if (source === 'slider-k') {
+          paramK.value = sliderK.value;
+          inputK.value = sliderK.value;
+          inputKCdf.value = sliderK.value;
+        } else if (source === 'param-k') {
+          if (Number(paramK.value) <= 25) sliderK.value = paramK.value;
+          inputK.value = paramK.value;
+          inputKCdf.value = paramK.value;
+        } else if (source === 'input-k') {
+          paramK.value = inputK.value;
+          if (Number(inputK.value) <= 25) sliderK.value = inputK.value;
+          inputKCdf.value = inputK.value;
+        } else if (source === 'input-k-cdf') {
+          paramK.value = inputKCdf.value;
+          if (Number(inputKCdf.value) <= 25) sliderK.value = inputKCdf.value;
+          inputK.value = inputKCdf.value;
+        } else if (source === 'graph-click') {
+          if (Number(paramK.value) <= 25) sliderK.value = paramK.value;
+          inputK.value = paramK.value;
+          inputKCdf.value = paramK.value;
+        }
+
+        const pRaw = inputP.value.trim();
+        const p = Number(pRaw);
+        let pValid = true;
+        if (pRaw === '' || isNaN(p) || p <= 0 || p > 1) {
+          errorP.textContent = 'p must be in (0, 1]';
+          inputP.classList.add('is-invalid');
+          pValid = false;
+        } else {
+          errorP.textContent = '';
+          inputP.classList.remove('is-invalid');
+        }
+
+        if (!pValid) {
+          depContent.style.display = 'none';
+          return;
+        }
+        depContent.style.display = 'block';
+
+        const kRaw = paramK.value.trim();
+        const k = Number(kRaw);
+        let kValid = true;
+        if (kRaw === '' || isNaN(k) || !Number.isInteger(k) || k < 1) {
+          const kErrMsg = 'k must be an integer ≥ 1';
+          errorParamK.textContent = kErrMsg;
+          errorK.textContent = kErrMsg;
+          errorKCdf.textContent = kErrMsg;
+          paramK.classList.add('is-invalid');
+          inputK.classList.add('is-invalid');
+          inputKCdf.classList.add('is-invalid');
+          kValid = false;
+        } else {
+          errorParamK.textContent = '';
+          errorK.textContent = '';
+          errorKCdf.textContent = '';
+          paramK.classList.remove('is-invalid');
+          inputK.classList.remove('is-invalid');
+          inputKCdf.classList.remove('is-invalid');
+        }
+
+        document.getElementById('geo-selected-line').textContent =
+          kValid ? `Selected: p = ${p}, k = ${k}` : `Selected: p = ${p}`;
+
+        const mean = 1 / p;
+        const variance = (1 - p) / (p * p);
+        const std = Math.sqrt(variance);
+        const ex2 = variance + mean * mean;
+
+        document.getElementById('geo-stat-mean').textContent = formatStat(mean, 4);
+        document.getElementById('geo-stat-var').textContent = formatStat(variance, 4);
+        document.getElementById('geo-stat-std').textContent = formatStat(std, 4);
+        document.getElementById('geo-stat-ex2').textContent = formatStat(ex2, 4);
+
+        const skewEl = document.getElementById('geo-stat-skew');
+        if (p === 1 || variance === 0) {
+          skewEl.textContent = 'Undefined (variance = 0)';
+        } else {
+          const skew = (2 - p) / Math.sqrt(1 - p);
+          skewEl.textContent = formatStat(skew, 4);
+        }
+
+        const pmfBox = document.getElementById('geo-pmf-box');
+        const cdfBox = document.getElementById('geo-cdf-box');
+
+        if (!kValid) {
+          pmfBox.style.display = 'none';
+          cdfBox.style.display = 'none';
+        } else {
+          pmfBox.style.display = 'block';
+          cdfBox.style.display = 'block';
+
+          const probK = calcGeometricPMF(p, k);
+          const probKFormatted = formatProbability(probK);
+
+          document.getElementById('geo-pmf-expr').textContent =
+            `P(X = ${k}) = (1 − ${p})^(${k} − 1) · ${p} = ${probKFormatted}`;
+          document.getElementById('geo-pmf-sentence').textContent =
+            `The probability that the first success occurs on trial ${k} is ${probKFormatted}.`;
+
+          let cdfProb = (p === 1) ? 1 : 1 - Math.pow(1 - p, k);
+          if (cdfProb > 1) cdfProb = 1;
+          const cdfFormatted = formatProbability(cdfProb);
+          const cdfCompFormatted = (1 - parseFloat(cdfFormatted)).toFixed(6);
+
+          document.getElementById('geo-cdf-expr').textContent =
+            `P(X ≤ ${k}) = 1 − (1 − ${p})^${k} = ${cdfFormatted},  P(X > ${k}) = (1 − ${p})^${k} = ${cdfCompFormatted}`;
+          document.getElementById('geo-cdf-sum').textContent =
+            `P(X ≤ ${k}) + P(X > ${k}) = 1.000000`;
+        }
+
+        renderGeometricChart(p, kValid ? k : -1, mean);
+      }
+
+      function renderGeometricChart(p, highlightedK, mean) {
+        const labels = [];
+        const data = [];
+        const bgColors = [];
+        const borderColors = [];
+
+        let cumSum = 0;
+        let x = 1;
+        const minBars = Math.max(10, highlightedK >= 1 ? Math.min(highlightedK, 100) : 1);
+
+        while (x <= 100) {
+          labels.push(x);
+          const prob = calcGeometricPMF(p, x);
+          cumSum += prob;
+          data.push(prob);
+
+          if (x === highlightedK) {
+            bgColors.push('rgba(245, 158, 11, 0.9)');
+            borderColors.push('#d97706');
+          } else {
+            bgColors.push('rgba(37, 99, 235, 0.65)');
+            borderColors.push('#1d4ed8');
+          }
+
+          if (cumSum >= 0.999 && x >= minBars) {
+            break;
+          }
+          x++;
+        }
+
+        const ctx = document.getElementById('geo-chart').getContext('2d');
+        if (geoChart) {
+          geoChart.destroy();
+        }
+
+        geoChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Probability P(X)',
+              data: data,
+              backgroundColor: bgColors,
+              borderColor: borderColors,
+              borderWidth: 1,
+              borderRadius: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            onClick: (e, elements) => {
+              if (elements && elements.length > 0) {
+                const clickedIdx = elements[0].index;
+                const clickedVal = labels[clickedIdx];
+                paramK.value = clickedVal;
+                update('graph-click');
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              meanLine: { value: mean },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    return `X = ${items[0].label}`;
+                  },
+                  label: function(item) {
+                    return `P(X=${item.label}) = ${formatProbability(item.parsed.y)}`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Trial number of first success X',
+                  font: { weight: '600', size: 12 }
+                },
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: labels.length > 50 ? 25 : undefined,
+                  maxRotation: 0
+                },
+                grid: { display: false }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Probability P(X)',
+                  font: { weight: '600', size: 12 }
+                },
+                beginAtZero: true,
+                ticks: {
+                  callback: function(val) {
+                    return val.toFixed(3);
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      inputP.addEventListener('input', () => update('input-p'));
+      sliderP.addEventListener('input', () => update('slider-p'));
+      paramK.addEventListener('input', () => update('param-k'));
+      sliderK.addEventListener('input', () => update('slider-k'));
+      inputK.addEventListener('input', () => update('input-k'));
+      inputKCdf.addEventListener('input', () => update('input-k-cdf'));
+
+      resetBtn.addEventListener('click', () => {
+        inputP.value = '0.3';
+        sliderP.value = '0.3';
+        paramK.value = '1';
+        sliderK.value = '1';
+        inputK.value = '1';
+        inputKCdf.value = '1';
+        update('reset');
+      });
+
+      setupGraphTools('geo-graph-card', 'geo-chart-container', 'geo-fullscreen-btn', () => geoChart);
+
+      update('init');
+    }
+
+    // Initialize when DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+      initBinomial();
+      initPoisson();
+      initGeometric();
+      handleRoute();
+    });
+  </script>
+</body>
+</html>

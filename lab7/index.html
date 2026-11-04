@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Continuous Probability Distributions: Industry Applications</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- KaTeX for crisp mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <style>
+    input[type=range] {
+      accent-color: #2563eb;
+    }
+    .active-nav {
+      background-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- Header & Navigation -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between py-3 gap-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+            Pr
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 leading-tight">Continuous Probability Distributions</h1>
+            <p class="text-xs text-slate-500 font-medium">Undergraduate AIML Interactive Lab</p>
+          </div>
+        </div>
+        
+        <nav class="flex flex-wrap gap-1 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium">
+          <button onclick="switchTab('home')" id="tab-home" class="px-3.5 py-1.5 rounded-lg active-nav transition-all">Overview</button>
+          <button onclick="switchTab('normal')" id="tab-normal" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">1. Normal Distribution</button>
+          <button onclick="switchTab('exponential')" id="tab-exponential" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">2. Exponential Distribution</button>
+          <button onclick="switchTab('clt')" id="tab-clt" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">3. Central Limit Theorem</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- HOME OVERVIEW TAB -->
+    <section id="panel-home" class="space-y-6">
+      <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 rounded-2xl p-6 sm:p-10 text-white shadow-lg">
+        <span class="inline-block px-3 py-1 bg-white/10 text-blue-200 text-xs uppercase tracking-wider font-semibold rounded-full mb-3 backdrop-blur-sm">
+          Interactive Educational Workbench
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Applied Probability in Engineering & AI</h2>
+        <p class="mt-3 text-slate-200 max-w-3xl text-sm sm:text-base leading-relaxed">
+          Continuous probability distributions form the mathematical backbone of machine learning algorithms, statistical process control, and distributed systems engineering. Explore these models using real-world operational scenarios.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div onclick="switchTab('normal')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              N
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-600">Manufacturing Quality Control</h3>
+            <p class="text-xs text-blue-600 font-semibold uppercase tracking-wider mt-1">Normal (Gaussian) Distribution</p>
+            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+              Model precision CNC shaft machining tolerances. Measure defect rates, scrap risks, and Six-Sigma yield using upper and lower specification limits.
+            </p>
+          </div>
+          <span class="mt-6 text-sm font-semibold text-blue-600 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Launch Simulation &rarr;
+          </span>
+        </div>
+
+        <!-- Card 2 -->
+        <div onclick="switchTab('exponential')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+              E
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600">Cloud Request Inter-Arrival Time</h3>
+            <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wider mt-1">Exponential Distribution</p>
+            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+              Analyze API gateway traffic assuming a constant-rate Poisson process. Explore survival functions, idle rates, and the counter-intuitive memoryless property.
+            </p>
+          </div>
+          <span class="mt-6 text-sm font-semibold text-indigo-600 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Launch Simulation &rarr;
+          </span>
+        </div>
+
+        <!-- Card 3 -->
+        <div onclick="switchTab('clt')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+              C
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-emerald-600">Warehouse Processing Time</h3>
+            <p class="text-xs text-emerald-600 font-semibold uppercase tracking-wider mt-1">Central Limit Theorem (CLT)</p>
+            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+              Observe how sample averages of non-normal logistical order picking times converge to a Gaussian distribution as batch sample sizes scale up.
+            </p>
+          </div>
+          <span class="mt-6 text-sm font-semibold text-emerald-600 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Launch Simulation &rarr;
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 1: NORMAL DISTRIBUTION -->
+    <section id="panel-normal" class="hidden space-y-6">
+      <!-- Problem Header -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Module 1 — Quality Engineering</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Normal Distribution: Precision CNC Shaft Machining</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="setNormalPreset(10.0, 0.05, 9.90, 10.10, 10.00)" class="text-xs px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition">Default 10mm</button>
+            <button onclick="setNormalPreset(10.0, 0.02, 9.90, 10.10, 10.02)" class="text-xs px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg font-medium transition">High Precision (6σ)</button>
+            <button onclick="setNormalPreset(10.04, 0.045, 9.90, 10.10, 10.08)" class="text-xs px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg font-medium transition">Tool Wear Drift</button>
+          </div>
+        </div>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          <strong>Industry Scenario:</strong> A high-precision manufacturing plant manufactures transmission shafts with a nominal diameter target of <strong>10.00 mm</strong>. Physical shaft variations follow a Gaussian distribution due to tooling vibrations and thermal expansion. Diameters smaller than the Lower Specification Limit (<span class="font-semibold text-rose-600">LSL</span>) must be scrapped (loss of raw material). Diameters greater than the Upper Specification Limit (<span class="font-semibold text-amber-600">USL</span>) require secondary rework machining.
+        </p>
+      </div>
+
+      <!-- Main Interactive Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-blue-600"></span> Parameter Controls
+          </h3>
+
+          <!-- Mean μ -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="norm-mu">Mean Diameter (&mu;):</label>
+              <span id="val-mu" class="font-mono text-blue-600">10.00 mm</span>
+            </div>
+            <input type="range" id="norm-mu" min="9.50" max="10.50" step="0.01" value="10.00" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateNormal()">
+          </div>
+
+          <!-- Standard Deviation σ with strict validation -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="norm-sigma">Standard Deviation (&sigma;):</label>
+              <span id="val-sigma" class="font-mono text-blue-600">0.050 mm</span>
+            </div>
+            <input type="range" id="norm-sigma" min="0.005" max="0.150" step="0.005" value="0.050" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateNormal()">
+            <p class="text-[11px] text-slate-400 mt-0.5">Strictly enforced: &sigma; &gt; 0 (minimum 0.005 mm)</p>
+          </div>
+
+          <!-- Lower Spec Limit -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="norm-lsl">Lower Spec Limit (LSL):</label>
+              <span id="val-lsl" class="font-mono text-rose-600">9.90 mm</span>
+            </div>
+            <input type="range" id="norm-lsl" min="9.60" max="10.00" step="0.01" value="9.90" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateNormal()">
+          </div>
+
+          <!-- Upper Spec Limit -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="norm-usl">Upper Spec Limit (USL):</label>
+              <span id="val-usl" class="font-mono text-amber-600">10.10 mm</span>
+            </div>
+            <input type="range" id="norm-usl" min="10.00" max="10.40" step="0.01" value="10.10" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateNormal()">
+          </div>
+
+          <!-- Selected Inspection Point x -->
+          <div class="pt-2 border-t border-slate-100">
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="norm-x">Inspection Diameter (x):</label>
+              <span id="val-x" class="font-mono text-slate-900">10.00 mm</span>
+            </div>
+            <input type="range" id="norm-x" min="9.60" max="10.40" step="0.005" value="10.00" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateNormal()">
+          </div>
+
+          <!-- Error validation notice -->
+          <div id="norm-error" class="hidden p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-medium"></div>
+
+          <!-- Mathematical Formula Reference -->
+          <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 space-y-1">
+            <p class="font-semibold text-slate-700">Governing Gaussian PDF:</p>
+            <div id="norm-formula" class="bg-slate-50 p-2 rounded-lg text-center overflow-x-auto"></div>
+          </div>
+        </div>
+
+        <!-- Canvas Visualizer Column -->
+        <div class="lg:col-span-8 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Live Probability Density Function (PDF)</h3>
+              <div class="flex flex-wrap items-center gap-3 text-xs">
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rose-500 inline-block"></span> Scrapped (&lt; LSL)</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-emerald-500 inline-block"></span> Acceptable (Yield)</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-500 inline-block"></span> Rework (&gt; USL)</span>
+              </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full h-64 sm:h-80 bg-slate-950 rounded-xl overflow-hidden shadow-inner">
+              <canvas id="normalCanvas" class="w-full h-full block"></canvas>
+            </div>
+          </div>
+
+          <!-- Live Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100 text-center">
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+              <div class="text-[11px] text-slate-500 font-medium">Density at x</div>
+              <div id="norm-res-density" class="text-base font-bold text-slate-900 font-mono">0.000</div>
+              <div class="text-[10px] text-slate-400">f(x) mm⁻¹</div>
+            </div>
+            <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-100">
+              <div class="text-[11px] text-emerald-700 font-medium">Acceptable Yield</div>
+              <div id="norm-res-conforming" class="text-base font-bold text-emerald-700 font-mono">0.00%</div>
+              <div class="text-[10px] text-emerald-600">P(LSL &le; X &le; USL)</div>
+            </div>
+            <div class="bg-rose-50 p-2.5 rounded-xl border border-rose-100">
+              <div class="text-[11px] text-rose-700 font-medium">Scrap Defect Rate</div>
+              <div id="norm-res-scrap" class="text-base font-bold text-rose-700 font-mono">0.00%</div>
+              <div class="text-[10px] text-rose-600">P(X &lt; LSL)</div>
+            </div>
+            <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-100">
+              <div class="text-[11px] text-amber-700 font-medium">Rework Defect Rate</div>
+              <div id="norm-res-rework" class="text-base font-bold text-amber-700 font-mono">0.00%</div>
+              <div class="text-[10px] text-amber-600">P(X &gt; USL)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interpretation & Process Capability -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Quality Control Engineering Interpretation</h3>
+        <div id="norm-interpretation" class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <!-- Dynamic plain-language report injected here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 2: EXPONENTIAL DISTRIBUTION -->
+    <section id="panel-exponential" class="hidden space-y-6">
+      <!-- Problem Header -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Module 2 — Cloud & Distributed Systems</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Exponential Distribution: Cloud Request Inter-Arrival Time</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="setExpPreset(12, 5, 4, 10)" class="text-xs px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition">Default (12 req/min)</button>
+            <button onclick="setExpPreset(60, 1.5, 1, 3)" class="text-xs px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg font-medium transition">High Traffic (60 req/min)</button>
+            <button onclick="setExpPreset(2, 20, 15, 30)" class="text-xs px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg font-medium transition">Idle Off-Peak (2 req/min)</button>
+          </div>
+        </div>
+        
+        <p class="text-sm text-slate-600 leading-relaxed">
+          <strong>Industry Scenario:</strong> A microservice API gateway receives incoming HTTP calls. Modeling request inter-arrival time is critical for provisioning keep-alive connection pools, dynamic horizontal pod autoscaling (HPA), and thread starvation management.
+        </p>
+
+        <!-- Technical Process Boundaries Warning Callout -->
+        <div class="mt-3 p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl flex items-start gap-3">
+          <div class="text-amber-600 text-lg font-bold leading-none mt-0.5">⚠️</div>
+          <div class="text-xs text-amber-900 leading-relaxed">
+            <strong>Critical Modeling Assumption:</strong> This module models request <em>inter-arrival time</em> (the elapsed idle duration between incoming client requests) assuming a <strong>constant-rate Poisson arrival process</strong>. 
+            <span class="underline font-semibold">Do not confuse inter-arrival time with server response latency</span>: response latency measures the backend computation execution time, which typically depends on database queries and system queues.
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Interactive Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-indigo-600"></span> Rate & Time Parameters
+          </h3>
+
+          <!-- Arrival Rate λ (per min) -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="exp-lambda">Arrival Rate (&lambda;):</label>
+              <span id="val-exp-lambda" class="font-mono text-indigo-600">12.0 req/min</span>
+            </div>
+            <input type="range" id="exp-lambda" min="0.5" max="120" step="0.5" value="12" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateExp()">
+            <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+              <span>Equivalent per second:</span>
+              <span id="val-exp-lambda-sec" class="font-mono font-medium text-slate-600">0.2000 req/s</span>
+            </div>
+          </div>
+
+          <!-- Time Threshold t (seconds) -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+              <label for="exp-t">Time Threshold (t):</label>
+              <span id="val-exp-t" class="font-mono text-indigo-600">5.0 seconds</span>
+            </div>
+            <input type="range" id="exp-t" min="0.1" max="30" step="0.1" value="5" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="updateExp()">
+          </div>
+
+          <!-- Memoryless Property Test Inputs (t1, t2) -->
+          <div class="pt-3 border-t border-slate-100 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Memoryless Test Parameters</h4>
+              <span class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-semibold">t₂ &ge; t₁</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                <label for="exp-t1">Elapsed Silence Time (t₁):</label>
+                <span id="val-exp-t1" class="font-mono text-slate-700">4.0 s</span>
+              </div>
+              <input type="range" id="exp-t1" min="0" max="25" step="0.5" value="4" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="onT1Change()">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                <label for="exp-t2">Total Wait Horizon (t₂):</label>
+                <span id="val-exp-t2" class="font-mono text-slate-700">10.0 s</span>
+              </div>
+              <input type="range" id="exp-t2" min="0.5" max="30" step="0.5" value="10" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" oninput="onT2Change()">
+            </div>
+            <p class="text-[11px] text-slate-400">Additional wait interval: <span id="val-exp-diff" class="font-semibold text-slate-700 font-mono">6.0 s</span></p>
+          </div>
+
+          <!-- Mathematical Formula Reference -->
+          <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 space-y-1">
+            <p class="font-semibold text-slate-700">Governing Exponential PDF:</p>
+            <div id="exp-formula" class="bg-slate-50 p-2 rounded-lg text-center overflow-x-auto"></div>
+          </div>
+        </div>
+
+        <!-- Canvas Visualizer Column -->
+        <div class="lg:col-span-8 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Dynamic Inter-Arrival Density Curve</h3>
+              <div class="flex items-center gap-3 text-xs">
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-indigo-500 inline-block"></span> Arrival by t: P(T &le; t)</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-slate-300 inline-block"></span> Idle Beyond t: P(T &gt; t)</span>
+              </div>
+            </div>
+
+            <div class="relative w-full h-64 sm:h-80 bg-slate-950 rounded-xl overflow-hidden shadow-inner">
+              <canvas id="expCanvas" class="w-full h-full block"></canvas>
+            </div>
+          </div>
+
+          <!-- Statistical Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100 text-center">
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+              <div class="text-[11px] text-slate-500 font-medium">Mean Inter-Arrival E[T]</div>
+              <div id="exp-res-mean" class="text-base font-bold text-slate-900 font-mono">5.00 s</div>
+              <div id="exp-res-mean-min" class="text-[10px] text-slate-400">0.083 min</div>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+              <div class="text-[11px] text-slate-500 font-medium">Variance Var(T)</div>
+              <div id="exp-res-var" class="text-base font-bold text-slate-900 font-mono">25.00 s²</div>
+              <div class="text-[10px] text-slate-400">1/λ² (seconds squared)</div>
+            </div>
+            <div class="bg-indigo-50 p-2.5 rounded-xl border border-indigo-100">
+              <div class="text-[11px] text-indigo-700 font-medium">Arrival by t: P(T &le; t)</div>
+              <div id="exp-res-cdf" class="text-base font-bold text-indigo-700 font-mono">63.21%</div>
+              <div class="text-[10px] text-indigo-600">1 − exp(−λt)</div>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <div class="text-[11px] text-slate-600 font-medium">Idle Tail: P(T &gt; t)</div>
+              <div id="exp-res-survival" class="text-base font-bold text-slate-800 font-mono">36.79%</div>
+              <div class="text-[10px] text-slate-400">exp(−λt)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memoryless Breakdown & Real-World Interpretation -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Interactive Memoryless Card -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">The Memoryless Property Verified</h3>
+            <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold font-mono">P(T &gt; t₂ | T &gt; t₁) = P(T &gt; t₂ − t₁)</span>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed">
+            If the gateway has already waited <span class="font-mono font-semibold" id="mem-t1-text">4.0s</span> with zero incoming packets, what is the probability it must wait at least another <span class="font-mono font-semibold" id="mem-diff-text">6.0s</span> (total horizon <span class="font-mono font-semibold" id="mem-t2-text">10.0s</span>)?
+          </p>
+
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs font-mono">
+            <div class="flex justify-between pb-1 border-b border-slate-200">
+              <span class="text-slate-500">P(T &gt; t₂) / P(T &gt; t₁):</span>
+              <span id="mem-calc-lhs" class="font-bold text-indigo-600">0.3012</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">P(T &gt; t₂ − t₁) [Fresh 6.0s wait]:</span>
+              <span id="mem-calc-rhs" class="font-bold text-emerald-600">0.3012</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed">
+            <strong>Key Insight:</strong> The past wait time provides zero information about when the next request will arrive. The system does not "age" or get "due" for a packet.
+          </p>
+        </div>
+
+        <!-- SRE Architectural Advice Card -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Cloud Architecture & SRE Implications</h3>
+          <ul class="text-xs text-slate-600 space-y-2 leading-relaxed list-disc list-inside">
+            <li>
+              <strong>Connection Keep-Alive:</strong> Because idle periods follow a long-tailed exponential survival function, keeping idle TCP sockets open indefinitely exhausts system file descriptors. Set idle timeouts using $P(T > t_{idle}) < \epsilon$.
+            </li>
+            <li>
+              <strong>Autoscaler Cooldown:</strong> When traffic spikes ($\lambda$ increases), short inter-arrival times cluster naturally. Autoscalers must apply moving average filters or exponential smoothing to avoid continuous thrashing.
+            </li>
+            <li>
+              <strong>Rate Limiting / Leaky Bucket:</strong> Token-bucket rate limiters buffer bursts caused by Poisson event clustering even when the long-term average $\lambda$ is well within capacity.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 3: CENTRAL LIMIT THEOREM PLACEHOLDER -->
+    <section id="panel-clt" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Module 3 — Logistics Operations</span>
+        <h2 class="text-2xl font-bold text-slate-900 mt-1">Central Limit Theorem: Warehouse Processing Time</h2>
+        <p class="text-sm text-slate-600 mt-2">
+          This module is reserved for Module 3. It will simulate how non-normal individual order fulfillment times converge to a Gaussian distribution as batch sample sizes scale from $n=1$ to $n=100$.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+      Continuous Probability Distributions Educational Workbench &bull; Interactive AIML Systems Design
+    </div>
+  </footer>
+
+  <!-- Core Interactive Script -->
+  <script>
+    // --- Navigation ---
+    function switchTab(tabId) {
+      ['home', 'normal', 'exponential', 'clt'].forEach(t => {
+        const panel = document.getElementById(`panel-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (panel) panel.classList.toggle('hidden', t !== tabId);
+        if (btn) {
+          btn.classList.toggle('active-nav', t === tabId);
+          btn.classList.toggle('text-slate-600', t !== tabId);
+        }
+      });
+      // Trigger canvas render when tab becomes active
+      if (tabId === 'normal') renderNormal();
+      if (tabId === 'exponential') renderExp();
+    }
+
+    // --- High-Precision Error Function (Abramowitz and Stegun) ---
+    function erf(x) {
+      const sign = (x >= 0) ? 1 : -1;
+      x = Math.abs(x);
+      const a1 =  0.254829592;
+      const a2 = -0.284496736;
+      const a3 =  1.421413741;
+      const a4 = -1.453152027;
+      const a5 =  1.061405429;
+      const p  =  0.3275911;
+
+      const t = 1.0 / (1.0 + p * x);
+      const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+      return sign * y;
+    }
+
+    function normalCDF(x, mu, sigma) {
+      if (sigma <= 0) return 0;
+      return 0.5 * (1 + erf((x - mu) / (sigma * Math.SQRT2)));
+    }
+
+    function normalPDF(x, mu, sigma) {
+      if (sigma <= 0) return 0;
+      const factor = 1 / (sigma * Math.sqrt(2 * Math.PI));
+      const exponent = -0.5 * Math.pow((x - mu) / sigma, 2);
+      return factor * Math.exp(exponent);
+    }
+
+    // --- MODULE 1: NORMAL DISTRIBUTION LOGIC ---
+    function setNormalPreset(mu, sigma, lsl, usl, x) {
+      document.getElementById('norm-mu').value = mu;
+      document.getElementById('norm-sigma').value = sigma;
+      document.getElementById('norm-lsl').value = lsl;
+      document.getElementById('norm-usl').value = usl;
+      document.getElementById('norm-x').value = x;
+      updateNormal();
+    }
+
+    function updateNormal() {
+      const mu = parseFloat(document.getElementById('norm-mu').value);
+      let sigma = parseFloat(document.getElementById('norm-sigma').value);
+      let lsl = parseFloat(document.getElementById('norm-lsl').value);
+      let usl = parseFloat(document.getElementById('norm-usl').value);
+      const x = parseFloat(document.getElementById('norm-x').value);
+
+      const errEl = document.getElementById('norm-error');
+
+      // Strict validations
+      if (sigma <= 0 || isNaN(sigma)) {
+        sigma = 0.005;
+        document.getElementById('norm-sigma').value = 0.005;
+      }
+
+      if (lsl >= usl) {
+        errEl.textContent = "Validation Alert: Lower Specification Limit (LSL) must be strictly less than Upper Limit (USL). Adjusted.";
+        errEl.classList.remove('hidden');
+        usl = lsl + 0.01;
+        document.getElementById('norm-usl').value = usl;
+      } else {
+        errEl.classList.add('hidden');
+      }
+
+      // Update control labels
+      document.getElementById('val-mu').textContent = mu.toFixed(2) + " mm";
+      document.getElementById('val-sigma').textContent = sigma.toFixed(3) + " mm";
+      document.getElementById('val-lsl').textContent = lsl.toFixed(2) + " mm";
+      document.getElementById('val-usl').textContent = usl.toFixed(2) + " mm";
+      document.getElementById('val-x').textContent = x.toFixed(3) + " mm";
+
+      // Numerical Probabilities
+      const pLSL = normalCDF(lsl, mu, sigma);
+      const pUSL = normalCDF(usl, mu, sigma);
+      const pConforming = Math.max(0, pUSL - pLSL);
+      const pScrap = pLSL;
+      const pRework = 1.0 - pUSL;
+      const pdfAtX = normalPDF(x, mu, sigma);
+      const totalDefective = (pScrap + pRework) * 100;
+
+      // Update stat elements
+      document.getElementById('norm-res-density').textContent = pdfAtX.toFixed(3);
+      document.getElementById('norm-res-conforming').textContent = (pConforming * 100).toFixed(3) + "%";
+      document.getElementById('norm-res-scrap').textContent = (pScrap * 100).toFixed(3) + "%";
+      document.getElementById('norm-res-rework').textContent = (pRework * 100).toFixed(3) + "%";
+
+      // Process Capability Indices
+      const cp = (usl - lsl) / (6 * sigma);
+      const cpk = Math.min((mu - lsl) / (3 * sigma), (usl - mu) / (3 * sigma));
+
+      // Interpretation Report
+      const interpEl = document.getElementById('norm-interpretation');
+      let statusColor = "text-emerald-700 font-semibold";
+      let statusSummary = "High capability process operating safely within Six-Sigma specifications.";
+      if (totalDefective > 5) {
+        statusColor = "text-rose-700 font-semibold";
+        statusSummary = "High risk! Significant scrap or rework rates require immediate tooling recalibration.";
+      } else if (totalDefective > 0.5) {
+        statusColor = "text-amber-700 font-semibold";
+        statusSummary = "Acceptable commercial tolerance, but standard deviation causes slight yield attrition.";
+      }
+
+      interpEl.innerHTML = `
+        <div class="space-y-2">
+          <p class="${statusColor}">Current Quality Status: ${statusSummary}</p>
+          <p>
+            At current tolerances, exactly <strong>${(pConforming * 100).toFixed(2)}%</strong> of machined shafts meet tolerance (${lsl.toFixed(2)} &ndash; ${usl.toFixed(2)} mm). 
+            Total defective rate is <strong>${totalDefective.toFixed(2)}%</strong> 
+            (consisting of <strong>${(pScrap * 100).toFixed(2)}%</strong> irreparable undersized scrap and <strong>${(pRework * 100).toFixed(2)}%</strong> oversized rework).
+          </p>
+          <div class="flex flex-wrap gap-4 pt-1 font-mono text-xs text-slate-600">
+            <span>Process Capability (C_p): <strong>${cp.toFixed(2)}</strong></span>
+            <span>Process Centering (C_pk): <strong>${cpk.toFixed(2)}</strong></span>
+            <span>Estimated Scrap Rate: <strong>${Math.round(pScrap * 1000000).toLocaleString()} PPM</strong></span>
+          </div>
+        </div>
+      `;
+
+      renderNormalCanvas(mu, sigma, lsl, usl, x);
+    }
+
+    function renderNormalCanvas(mu, sigma, lsl, usl, xInspect) {
+      const canvas = document.getElementById('normalCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      
+      const width = canvas.parentElement.clientWidth;
+      const height = canvas.parentElement.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.resetTransform();
+      ctx.scale(dpr, dpr);
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Plot range: mu +- 4 standard deviations
+      const minX = mu - 4 * sigma;
+      const maxX = mu + 4 * sigma;
+      const peakY = normalPDF(mu, mu, sigma);
+      const maxY = peakY * 1.15;
+
+      const padding = { top: 25, bottom: 40, left: 55, right: 25 };
+      const plotW = width - padding.left - padding.right;
+      const plotH = height - padding.top - padding.bottom;
+
+      function toScreenX(val) {
+        return padding.left + ((val - minX) / (maxX - minX)) * plotW;
+      }
+      function toScreenY(val) {
+        return padding.top + plotH - (val / maxY) * plotH;
+      }
+
+      // Draw Gridlines & Axes
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      // Axis line
+      ctx.moveTo(padding.left, padding.top + plotH);
+      ctx.lineTo(padding.left + plotW, padding.top + plotH);
+      ctx.stroke();
+
+      // Shaded Regions
+      const steps = 300;
+      const stepSize = (maxX - minX) / steps;
+
+      function fillRegion(fromX, toX, fillStyle) {
+        if (fromX >= toX) return;
+        ctx.fillStyle = fillStyle;
+        ctx.beginPath();
+        ctx.moveTo(toScreenX(fromX), toScreenY(0));
+        for (let i = 0; i <= steps; i++) {
+          const val = minX + i * stepSize;
+          if (val >= fromX && val <= toX) {
+            ctx.lineTo(toScreenX(val), toScreenY(normalPDF(val, mu, sigma)));
+          }
+        }
+        ctx.lineTo(toScreenX(toX), toScreenY(0));
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // 1. Scrap (< LSL)
+      fillRegion(minX, Math.min(lsl, maxX), 'rgba(244, 63, 94, 0.45)');
+      // 2. Conforming (LSL to USL)
+      fillRegion(Math.max(lsl, minX), Math.min(usl, maxX), 'rgba(16, 185, 129, 0.45)');
+      // 3. Rework (> USL)
+      fillRegion(Math.max(usl, minX), maxX, 'rgba(245, 158, 11, 0.45)');
+
+      // Draw PDF Curve
+      ctx.strokeStyle = '#60a5fa';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const val = minX + i * stepSize;
+        const screenX = toScreenX(val);
+        const screenY = toScreenY(normalPDF(val, mu, sigma));
+        if (i === 0) ctx.moveTo(screenX, screenY);
+        else ctx.lineTo(screenX, screenY);
+      }
+      ctx.stroke();
+
+      // Vertical Limits Lines (LSL & USL)
+      function drawSpecLine(xVal, label, color) {
+        if (xVal < minX || xVal > maxX) return;
+        const sx = toScreenX(xVal);
+        ctx.strokeStyle = color;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(sx, padding.top);
+        ctx.lineTo(sx, padding.top + plotH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = color;
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, sx, padding.top - 8);
+      }
+
+      drawSpecLine(lsl, `LSL: ${lsl.toFixed(2)}`, '#f43f5e');
+      drawSpecLine(usl, `USL: ${usl.toFixed(2)}`, '#f59e0b');
+
+      // Inspection Marker Point
+      if (xInspect >= minX && xInspect <= maxX) {
+        const inspSX = toScreenX(xInspect);
+        const inspSY = toScreenY(normalPDF(xInspect, mu, sigma));
+
+        ctx.strokeStyle = '#ffffff';
+        ctx.setLineDash([2, 2]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(inspSX, padding.top + plotH);
+        ctx.lineTo(inspSX, inspSY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(inspSX, inspSY, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '10px monospace';
+        ctx.fillText(`x=${xInspect.toFixed(2)}`, inspSX, inspSY - 8);
+      }
+
+      // X-Axis Scale Ticks
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+      const tickCount = 5;
+      for (let i = 0; i <= tickCount; i++) {
+        const tickVal = minX + (i / tickCount) * (maxX - minX);
+        const tx = toScreenX(tickVal);
+        ctx.fillText(tickVal.toFixed(2) + "mm", tx, padding.top + plotH + 16);
+      }
+    }
+
+    function renderNormal() {
+      updateNormal();
+    }
+
+    // --- MODULE 2: EXPONENTIAL DISTRIBUTION LOGIC ---
+    function setExpPreset(lambdaMin, t, t1, t2) {
+      document.getElementById('exp-lambda').value = lambdaMin;
+      document.getElementById('exp-t').value = t;
+      document.getElementById('exp-t1').value = t1;
+      document.getElementById('exp-t2').value = t2;
+      updateExp();
+    }
+
+    function onT1Change() {
+      const t1 = parseFloat(document.getElementById('exp-t1').value);
+      let t2 = parseFloat(document.getElementById('exp-t2').value);
+      if (t2 < t1) {
+        document.getElementById('exp-t2').value = t1;
+      }
+      updateExp();
+    }
+
+    function onT2Change() {
+      let t1 = parseFloat(document.getElementById('exp-t1').value);
+      const t2 = parseFloat(document.getElementById('exp-t2').value);
+      if (t1 > t2) {
+        document.getElementById('exp-t1').value = t2;
+      }
+      updateExp();
+    }
+
+    function updateExp() {
+      const lambdaMin = parseFloat(document.getElementById('exp-lambda').value);
+      const tSec = parseFloat(document.getElementById('exp-t').value);
+      const t1 = parseFloat(document.getElementById('exp-t1').value);
+      const t2 = parseFloat(document.getElementById('exp-t2').value);
+
+      // Conversions
+      const lambdaSec = lambdaMin / 60; // rate per second
+
+      // Display inputs
+      document.getElementById('val-exp-lambda').textContent = lambdaMin.toFixed(1) + " req/min";
+      document.getElementById('val-exp-lambda-sec').textContent = lambdaSec.toFixed(4) + " req/s";
+      document.getElementById('val-exp-t').textContent = tSec.toFixed(1) + " seconds";
+      document.getElementById('val-exp-t1').textContent = t1.toFixed(1) + " s";
+      document.getElementById('val-exp-t2').textContent = t2.toFixed(1) + " s";
+      document.getElementById('val-exp-diff').textContent = (t2 - t1).toFixed(1) + " s";
+
+      // 1. Mean = 1 / lambda
+      const meanSec = 1 / lambdaSec;
+      const meanMin = 1 / lambdaMin;
+
+      // 2. Variance = 1 / lambda^2
+      const varSec = 1 / Math.pow(lambdaSec, 2);
+
+      // 3. P(T <= t) = 1 - exp(-lambda * t)
+      const pArrive = 1 - Math.exp(-lambdaSec * tSec);
+
+      // 4. P(T > t) = exp(-lambda * t)
+      const pSurvival = Math.exp(-lambdaSec * tSec);
+
+      // 5. Memoryless Property: P(T > t2 | T > t1) = exp(-lambda * (t2 - t1))
+      const diffT = Math.max(0, t2 - t1);
+      const pCond = Math.exp(-lambdaSec * diffT);
+      const pDiffDirect = Math.exp(-lambdaSec * diffT);
+
+      // Update metrics
+      document.getElementById('exp-res-mean').textContent = meanSec.toFixed(2) + " s";
+      document.getElementById('exp-res-mean-min').textContent = meanMin.toFixed(3) + " min";
+      document.getElementById('exp-res-var').textContent = varSec.toFixed(2) + " s²";
+      document.getElementById('exp-res-cdf').textContent = (pArrive * 100).toFixed(2) + "%";
+      document.getElementById('exp-res-survival').textContent = (pSurvival * 100).toFixed(2) + "%";
+
+      // Update Memoryless Card
+      document.getElementById('mem-t1-text').textContent = t1.toFixed(1) + "s";
+      document.getElementById('mem-t2-text').textContent = t2.toFixed(1) + "s";
+      document.getElementById('mem-diff-text').textContent = diffT.toFixed(1) + "s";
+      document.getElementById('mem-calc-lhs').textContent = pCond.toFixed(4) + ` (${(pCond * 100).toFixed(2)}%)`;
+      document.getElementById('mem-calc-rhs').textContent = pDiffDirect.toFixed(4) + ` (${(pDiffDirect * 100).toFixed(2)}%)`;
+
+      renderExpCanvas(lambdaSec, tSec, t1, t2);
+    }
+
+    function renderExpCanvas(lambda, thresholdT, t1, t2) {
+      const canvas = document.getElementById('expCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+
+      const width = canvas.parentElement.clientWidth;
+      const height = canvas.parentElement.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.resetTransform();
+      ctx.scale(dpr, dpr);
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Max time displayed: ~ 4.5 mean inter-arrivals or at least t2 + 2s
+      const mean = 1 / lambda;
+      const maxPlotT = Math.max(mean * 4, t2 * 1.25, thresholdT * 1.5, 10);
+      const peakY = lambda;
+      const maxY = peakY * 1.2;
+
+      const padding = { top: 25, bottom: 40, left: 55, right: 25 };
+      const plotW = width - padding.left - padding.right;
+      const plotH = height - padding.top - padding.bottom;
+
+      function toScreenX(t) {
+        return padding.left + (t / maxPlotT) * plotW;
+      }
+      function toScreenY(y) {
+        return padding.top + plotH - (y / maxY) * plotH;
+      }
+
+      // X-Axis base
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padding.left, padding.top + plotH);
+      ctx.lineTo(padding.left + plotW, padding.top + plotH);
+      ctx.stroke();
+
+      const steps = 300;
+      const dt = maxPlotT / steps;
+
+      // Fill Arrived Area P(T <= t)
+      ctx.fillStyle = 'rgba(99, 102, 241, 0.45)'; // Indigo
+      ctx.beginPath();
+      ctx.moveTo(toScreenX(0), toScreenY(0));
+      for (let i = 0; i <= steps; i++) {
+        const curT = i * dt;
+        if (curT <= thresholdT) {
+          const yVal = lambda * Math.exp(-lambda * curT);
+          ctx.lineTo(toScreenX(curT), toScreenY(yVal));
+        }
+      }
+      ctx.lineTo(toScreenX(thresholdT), toScreenY(0));
+      ctx.closePath();
+      ctx.fill();
+
+      // Fill Survival Area P(T > t)
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.2)'; // Slate tail
+      ctx.beginPath();
+      ctx.moveTo(toScreenX(thresholdT), toScreenY(0));
+      for (let i = 0; i <= steps; i++) {
+        const curT = i * dt;
+        if (curT >= thresholdT) {
+          const yVal = lambda * Math.exp(-lambda * curT);
+          ctx.lineTo(toScreenX(curT), toScreenY(yVal));
+        }
+      }
+      ctx.lineTo(toScreenX(maxPlotT), toScreenY(0));
+      ctx.closePath();
+      ctx.fill();
+
+      // Curve line
+      ctx.strokeStyle = '#818cf8';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const curT = i * dt;
+        const yVal = lambda * Math.exp(-lambda * curT);
+        const sx = toScreenX(curT);
+        const sy = toScreenY(yVal);
+        if (i === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+
+      // Threshold line t
+      const sxThresh = toScreenX(thresholdT);
+      ctx.strokeStyle = '#ffffff';
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(sxThresh, padding.top);
+      ctx.lineTo(sxThresh, padding.top + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`t = ${thresholdT.toFixed(1)}s`, sxThresh, padding.top - 8);
+
+      // Memoryless Interval Markers
+      const sx1 = toScreenX(t1);
+      const sx2 = toScreenX(t2);
+
+      // Draw t1 dashed line
+      ctx.strokeStyle = '#38bdf8';
+      ctx.setLineDash([2, 3]);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(sx1, padding.top + 20);
+      ctx.lineTo(sx1, padding.top + plotH);
+      ctx.stroke();
+
+      // Draw t2 dashed line
+      ctx.strokeStyle = '#34d399';
+      ctx.beginPath();
+      ctx.moveTo(sx2, padding.top + 20);
+      ctx.lineTo(sx2, padding.top + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText(`t₁=${t1.toFixed(1)}`, sx1, padding.top + 15);
+      ctx.fillStyle = '#34d399';
+      ctx.fillText(`t₂=${t2.toFixed(1)}`, sx2, padding.top + 15);
+
+      // X-Ticks
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px monospace';
+      const tickCount = 6;
+      for (let i = 0; i <= tickCount; i++) {
+        const tickVal = (i / tickCount) * maxPlotT;
+        const tx = toScreenX(tickVal);
+        ctx.fillText(tickVal.toFixed(1) + "s", tx, padding.top + plotH + 16);
+      }
+    }
+
+    function renderExp() {
+      updateExp();
+    }
+
+    // --- On-Demand Formula KaTeX Rendering ---
+    window.addEventListener('DOMContentLoaded', () => {
+      // Render formulas using KaTeX once loaded
+      const checkKatex = setInterval(() => {
+        if (window.katex) {
+          clearInterval(checkKatex);
+          try {
+            katex.render("f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} \\exp\\left( -\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2 \\right)", document.getElementById('norm-formula'), { throwOnError: false });
+            katex.render("f(t) = \\lambda e^{-\\lambda t}, \\quad t \\ge 0", document.getElementById('exp-formula'), { throwOnError: false });
+          } catch (e) {
+            console.error("KaTeX rendering error:", e);
+          }
+        }
+      }, 100);
+
+      // Initial compute and draw
+      updateNormal();
+      updateExp();
+
+      // Handle window resizing cleanly for high-DPI canvas
+      window.addEventListener('resize', () => {
+        const activeNormal = !document.getElementById('panel-normal').classList.contains('hidden');
+        const activeExp = !document.getElementById('panel-exponential').classList.contains('hidden');
+        if (activeNormal) updateNormal();
+        if (activeExp) updateExp();
+      });
+    });
+  </script>
+</body>
+</html>

@@ -460,6 +460,7 @@
       max-height: 850px;
       width: 100%;
       margin-top: 0.5rem;
+      padding-top: 6px;
       resize: vertical;
       overflow: hidden;
       border: 1px dashed transparent;
@@ -1172,22 +1173,26 @@
 
         ctx.setLineDash([]);
         const labelText = `Mean μ = ${meanVal.toFixed(2)}`;
-        ctx.font = 'bold 11px -apple-system, sans-serif';
+        ctx.font = 'bold 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         const textWidth = ctx.measureText(labelText).width;
         let textX = xPixel;
         if (textX - textWidth / 2 < xAxis.left + 4) textX = xAxis.left + textWidth / 2 + 4;
         if (textX + textWidth / 2 > xAxis.right - 4) textX = xAxis.right - textWidth / 2 - 4;
 
+        // Position badge safely above yAxis.top with guaranteed clearance from canvas top
+        const badgeHeight = 18;
+        const badgeY = Math.max(6, yAxis.top - badgeHeight - 4);
+
         ctx.fillStyle = 'rgba(254, 242, 242, 0.95)';
-        ctx.fillRect(textX - textWidth / 2 - 4, yAxis.top - 18, textWidth + 8, 16);
+        ctx.fillRect(textX - textWidth / 2 - 5, badgeY, textWidth + 10, badgeHeight);
         ctx.strokeStyle = '#fca5a5';
         ctx.lineWidth = 1;
-        ctx.strokeRect(textX - textWidth / 2 - 4, yAxis.top - 18, textWidth + 8, 16);
+        ctx.strokeRect(textX - textWidth / 2 - 5, badgeY, textWidth + 10, badgeHeight);
 
         ctx.fillStyle = '#991b1b';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(labelText, textX, yAxis.top - 10);
+        ctx.fillText(labelText, textX, badgeY + badgeHeight / 2);
         ctx.restore();
       }
     };
@@ -1527,6 +1532,9 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: { top: 32, right: 16, bottom: 8, left: 8 }
+            },
             onClick: (e, elements) => {
               if (elements && elements.length > 0) {
                 const clickedIdx = elements[0].index;
@@ -1570,6 +1578,7 @@
                   font: { weight: '600', size: 12 }
                 },
                 beginAtZero: true,
+                grace: '10%',
                 ticks: {
                   callback: function(val) {
                     return val.toFixed(3);
@@ -1797,6 +1806,9 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: { top: 32, right: 16, bottom: 8, left: 8 }
+            },
             onClick: (e, elements) => {
               if (elements && elements.length > 0) {
                 const clickedIdx = elements[0].index;
@@ -1840,6 +1852,7 @@
                   font: { weight: '600', size: 12 }
                 },
                 beginAtZero: true,
+                grace: '10%',
                 ticks: {
                   callback: function(val) {
                     return val.toFixed(3);
@@ -2065,6 +2078,9 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: { top: 32, right: 16, bottom: 8, left: 8 }
+            },
             onClick: (e, elements) => {
               if (elements && elements.length > 0) {
                 const clickedIdx = elements[0].index;
@@ -2108,6 +2124,7 @@
                   font: { weight: '600', size: 12 }
                 },
                 beginAtZero: true,
+                grace: '10%',
                 ticks: {
                   callback: function(val) {
                     return val.toFixed(3);
